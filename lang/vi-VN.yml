@@ -1,0 +1,339 @@
+effects:
+  reveal: '&eBạn đang bị lộ diện (%second% giây)'
+  armor-weaken: '&7Bạn đang bị giảm giáp (%reduce% giáp - %second% giây)'
+death-reason:
+  GUN: '%dmger_team_color%&l%dmger% &fđã bắn chết %target_team_color%&l%target% &fbằng %weapon%'
+  KNIFE: '%dmger_team_color%&l%dmger% &fđã đâm chết %target_team_color%&l%target% &fbằng %weapon%'
+  GRANDE: '%target_team_color%&l%target% &fđã bị lựu đạn của %dmger_team_color%&l%dmger% &fnổ chết'
+  SKILL: '%target_team_color%&l%target% &fđã bị giết bởi %dmger_team_color%&l%dmger% &fbằng kĩ năng &e%skill%'
+status-bar:
+  health-bar: '§c§l♥ §c%current_health%'
+  health-bar-dead: '&c&lBạn đã chết. Bạn sẽ hồi sinh ở vòng đấu kế tiếp.'
+lore:
+  knife:
+    - '&b• Sát thương : &f%damage%'
+  gun:
+    - '&b• Thông số súng :'
+    - '  &f⌊ %wall_penetration%: &f%wall_penetration_value%'
+    - '  &f⌊ %fire_rate%: &f%fire_rate_value%'
+    - '  &f⌊ %reload_speed%: &f%reload_speed_value%'
+    - '  &f⌊ %magazine%: &f%magazine_value%'
+    - '  &f⌊ %reserve%: &f%reserve_value%'
+    - ''
+    - '&b• Số phát đạn để hạ gục :'
+    - '%damage_range%'
+  damage_range:
+    - '  &a► %min_range%m - %max_range%m'
+    - '    &6• Đầu : &f%bullet_to_kill_head% viên'
+    - '    &6• Thân : &f%bullet_to_kill_body% viên'
+    - '    &6• Chân : &f%bullet_to_kill_feet% viên'
+attribute:
+  display:
+    CURRENT_HEALTH: 'Máu hiện tại'
+    MAX_HEALTH: 'Máu tối đa'
+    PHYSICAL_DAMAGE: 'Sát thương vật lí'
+    ARMOR: 'Giáp'
+    CRITICAL_CHANCE: 'Phần trăm chí mạng'
+    CRITICAL_MULTIPLY: 'Hệ số chí mạng'
+    MOVEMENT_SPEED: 'Tốc độ di chuyển'
+    ARMOR_PENETRATION: 'Xuyên giáp'
+    ABILITY_HASTE: 'Điểm hồi chiêu'
+medal:
+  rank:
+    APPRECIATED: 'Đáng khen ngợi'
+    ELITE: 'Uy phong'
+    MASTER: 'Chuyên gia'
+    CHALLENGER: 'Thách đấu'
+  MATCH_POINT:
+    icon: '🏆'
+    description: 'Điểm trận đấu'
+  CAPTURE_POINT:
+    icon: '◈'
+    description: 'Chiếm cứ điểm'
+  PUSH_CART:
+    icon: '💣'
+    description: 'Đẩy xe bom'
+  DEFUSE_BOMB:
+    icon: '✂'
+    description: 'Gỡ bom'
+category:
+  gun: 'Súng'
+  knife: 'Dao'
+gun-meta-type:
+  WALL_PENETRATION: 'Xuyên tường'
+  FIRE_RATE: 'Tốc độ bắn'
+  RELOAD_SPEED: 'Tốc độ nạp đạn'
+  MAGAZINE: 'Số viên đạn/băng'
+  RESERVE: 'Số băng đạn'
+gun-type:
+  shortgun: 'Shotgun'
+  rifle: 'Súng trường'
+  sniper: 'Súng ngắm'
+  smg: 'Súng tiểu liên'
+  sidearm: 'Súng lục'
+  machine_gun: 'Súng máy'
+weapon:
+  displayname:
+    knife:
+      dagger: '&7Dao găm'
+  skin-editions:
+    DEFAULT:
+    POPULAR:
+      icon: '﹡'
+      color: '&7'
+    DELUXE:
+      icon: '⁕'
+      color: '&2'
+    PREMIUM:
+      icon: '❋'
+      color: '&6'
+    EXCLUSIVE:
+      icon: '❃'
+      color: '&c'
+    ULTRA:
+      icon: '❉'
+      color: '&e'
+  main: 'chính'
+  sub: 'phụ'
+  description:
+    main: 'Là vũ khí chiến đấu chính cầm trên tay.'
+    sub: 'Là vũ khí nằm ở tay chờ, thường là vũ khí cận chiến.'
+ui:
+  match-sum-up:
+    medal: '%rank_color%%statistic_icon% %statistic% (%rank%)'
+    player-detail:
+      - '&f%kda%'
+      - ''
+      - '&f► %team_color%Đội: %team%'
+      - '&f► %team_color%Điểm MVP: &f%mvp_point%'
+      - '&f► %team_color%Huy hiệu nhận được:'
+      - '%medal%'
+    mvp:
+      winning: '&e▼ Người chơi là MVP đội thắng ▼'
+      losing: '&c▼ Người chơi là MVP đội thua ▼'
+      pog: '&6&l▼ Người chơi đỉnh nhất ▼'
+  match-edit:
+    create-match:
+      title: 'Tạo đấu trường mới'
+      match-type: '&fChế độ chơi: &a&l%display%'
+      map-type: '&fBản đồ: &d%display%'
+      click-to-edit: '&7Nhấn để chỉnh sửa'
+      success:
+        title: '&a&lTHÀNH CÔNG'
+        sub-title: '&fTạo trận với ID là &e%id%'
+      done:
+        displayname: '&a&lHoàn thành'
+        lore:
+          - '&fNhấn để xác nhận tạo đấu'
+          - '&ftrường mới.'
+    select-match:
+      title: 'Lựa chọn đấu trường để chỉnh sửa'
+      create-button:
+        displayname: '&aTạo đấu trường mới'
+        lore:
+          - '&fNhấn để tạo ra thêm một đấu'
+          - '&ftrường mới.'
+    location-menu:
+      title: 'Thiết lập vị trí'
+      location-type-name:
+        UNDEFINED_TEAM_BASE: '&aVị trí nhà đội A và B'
+        TEAM_ATTACKER_BASE: '&cVị trí nhà đội Tấn công'
+        TEAM_DEFENDER_BASE: '&bVị trí nhà đội Phòng thủ'
+        BOMB_CART_START: '&dXe bom bắt đầu'
+        BOMB_CART_END: '&dXe bom kết thúc'
+        CAPTURE_POINT: '&fVị trí cứ điểm'
+      lore-multiloc-true: '&eChuột phải &fđể thêm một vị trí mới'
+      lore-multiloc-false: '&eChuột phải &fđể thiết lập vị trí'
+      reach-max-size: '&cĐã đạt số lượng vị trí tối đa.'
+      lore-reset: '&bChuột giữa &fđể xóa các vị trí đã thiết lập'
+      set-location-instruction: '&fDi chuyển đến vị trí cần thiết lập sau đó gõ chữ &ahere &fđể xác nhận.'
+    main-menu:
+      title: 'Thiết lập đấu trường'
+      id-item: '&fMã số : &a&l%id%'
+      location:
+        display-name: '&dChỉnh sửa các vị trí'
+        lore:
+          - '&fNhấn vào để chỉnh sửa các vị'
+          - '&ftrí đặc biệt trên bản đồ của'
+          - '&fđấu trường.'
+  previous-page: '&6<< Trang trước'
+  next-page: '&6Trang kế tiếp >>'
+  agent-select:
+    title: '&c&lChọn Đặc vụ'
+    ally-name: '&b&l%player_name%'
+    enemy-name: '&c&l%player_name%'
+    not-picked: '&7Chưa chọn đặc vụ'
+    is-picking: '&eĐang chọn ...'
+    player-is-picking: '%player% đang chọn ...'
+    picked: '&e&l%agent_name%'
+    phase-description: '&7%phase_description%'
+    not-your-turn: '&c&lCHƯA PHẢI LƯỢT BẠN CHỌN ĐẶC VỤ'
+    agent-info:
+      - '&6✶ Điểm thông thạo: &f%mastery_point% &7&o(%mastery_rank%)'
+    notify:
+      agent-selected: 'Bạn vừa chọn đặc vụ %agent_name%'
+    weapon-select:
+      next-weapon: '&b&lVũ khí tiếp theo ►'
+      previous-weapon: '&b&l◄ Vũ khí trước đó'
+      click-to-change-skin: '&e&nNhấn để đổi sang skin khác'
+      click-to-next: '&7Nhấn để chuyển tiếp vũ khí.'
+      following-weapon: '&f• Vũ khí kế tiếp :'
+    phase:
+      preparing: 'Chuẩn bị chọn đặc vụ'
+      selecting: 'Đang chọn đặc vụ'
+      finalizing: 'Chuẩn bị vào trận'
+      finished: 'Đã kết thúc'
+mechanic:
+  bomb-cart:
+    finish:
+      result-description:
+        DEFENDER_BOMB_DEFUSE: '&bĐội phòng thủ &fđã gỡ được bom trên xe hàng.'
+        DEFENDER_BOMB_EXPLODE: '&fHết thời gian quy định mà &cđội tấn công &fvẫn chưa đẩy được xe bom vào căn cứ &bđội phòng thủ&f. Do đó bom đã phát nổ.'
+        ATTACKER_PUSH_SUCCESS: '&cĐội tấn công &fđã đẩy xe bom vào căn cứ của &bđội phòng thủ&f.'
+      result-broadcast:
+        - '&e&lKẾT QUẢ VÒNG ĐẤU #%round% &7&o(Chế độ đẩy xe bom)'
+        - '%result_description%'
+        - '&aTỉ số : &c&l%attacker_score% &f- &b&l%defender_score%'
+      winning-team:
+        defender:
+          title: '&b&lPHÒNG THỦ THÀNH CÔNG'
+          sub-title: '&eĐội bạn đã đẩy lùi xe bom'
+        attacker:
+          title: '&c&lTẤN CÔNG THÀNH CÔNG'
+          sub-title: '&eĐội bạn đã đẩy xe bom tới đích'
+      losing-team:
+        defender:
+          title: '&4&lPHÒNG THỦ THẤT BẠI'
+          sub-title: '&cXe bom đã vào đến căn cứ'
+        attacker:
+          title: '&4&lTẤN CÔNG THẤT BẠI'
+          sub-title: '&cXe bom đã không tới được đích'
+    defusing-item:
+      displayname: '&eDụng cụ gỡ bom'
+      lore:
+        - '&7Cầm và shift-phải chuột cạnh thùng'
+        - '&7bom để gỡ bom. Cần %defusing_time% giây để gỡ.'
+    cart-name: '&cThùng thuốc nổ'
+    defusing-bar-title: '&eĐang gỡ bom trên xe hàng ... (%countdown%)'
+    start-title:
+      attacker:
+        title: '&c&lĐẨY XE BOM'
+        sub-title: '&eVòng đấu thứ #%round%'
+      defender:
+        title: '&b&lPHÒNG THỦ XE BOM'
+        sub-title: '&eVòng đấu thứ #%round%'
+  capture-mechanic:
+    finish:
+      winning-team:
+        title: '&a&lHOÀN THÀNH'
+        sub-title: '&eChiếm cứ điểm thành công'
+      losing-team:
+        title: '&c&lTHẤT BẠI'
+        sub-title: '&eChiếm cứ điểm không thành công'
+      mvp-broadcast:
+        - '&e&lKẾT QUẢ VÒNG ĐẤU #%phase_index% &7&o(Chế độ chiếm cứ điểm)'
+        - '&e&l► ⓂⓋⓅ ◄'
+        - '%team_color% Ⅰ) %player_name% &7&o(%score% điểm)'
+        - '%team_color% Ⅱ) %player_name% &7&o(%score% điểm)'
+        - '%team_color% Ⅲ) %player_name% &7&o(%score% điểm)'
+      score: '&aTỉ số hiện tại: &b&l%team_a_winning_phase% &f- &c&l%team_b_winning_phase%'
+    capture-point-set: '&eVị trí của cứ điểm đã xuất hiện ! Hãy mau chóng đến chiếm !'
+    start-title:
+      title: '&a&lChiếm cứ điểm'
+      sub-title: '&eVòng đấu thứ #%round%'
+match:
+  game-start-soon: '&e&l► Đang tải trận ◄'
+  broadcast:
+    join: '&a%player% &evừa tham gia đấu trường &7(%current_size%/%player_to_start%)'
+  match-type:
+    NORMAL: 'Đấu thường'
+    RANKED: 'Đấu xếp hạng'
+    PRACTICE: 'Phòng đấu tập'
+    CUSTOM: 'Trận custom'
+    SPECIAL_MODE: 'Chế độ đặc biệt'
+  preparation:
+    start-countdown-broadcast: '&aTrận đấu sẽ sớm bắt đầu !'
+    start-countdown-title: '&c&lCHUẨN BỊ THAM CHIẾN'
+    start-countdown-subtitle: '&e%0'
+  ingame:
+    set-scoping-false: '&cBạn đã rời chế độ ngắm'
+    set-scoping-true: '&bBạn đang ở chế độ ngắm'
+    prepare-change-phase: '&aChuẩn bị sang vòng đấu kế tiếp ...'
+    changing-phase-title:
+      title: '&d&lSẵn sàng cho vòng #%round%'
+      sub-title: '&b%countdown%'
+    changing-mechanic-title:
+      title: '&e&lChuẩn bị đổi chế độ'
+      sub-title: '&a%countdown%'
+  finish:
+    sum-up-broadcast:
+      - '&e✧✦✧ &e&lTỔNG QUAN TRẬN ĐẤU &e✧✦✧'
+      - '&f%atk_score% &7- &f%def_score%'
+      - ''
+      - '&a&lMVPs'
+      - '&c&lMVP đội tấn công: &f&l%mvp_atk_name% &7&o(%mvp_atk_point%)'
+      - '&b&lMVP đội phòng thủ: &f&l%mvp_def_name% &7&o(%mvp_def_point%)'
+      - '&a&lPOG'
+      - '&f&l%pog_name%'
+      - '%pog_medal%'
+      - ''
+      - '&6&lThành tích của bạn'
+      - '%kda%'
+      - '%your_medal%'
+      - ''
+      - '&2&lPhần thưởng'
+      - '%reward%'
+      - ''
+      - '&e✧✦✧✦✧✦✧✦✧✦✧✦✧✦✧'
+    victory-title:
+      title: '&b&lCHIẾN THẮNG'
+      sub-title: '&fĐội bạn đã chiến thắng trận đấu'
+    defeat-title:
+      title: '&c&lTHẤT BẠI'
+      sub-title: '&fĐội bạn đã thua trận đấu'
+team:
+  undefined:
+    a: '&bĐội A'
+    b: '&cĐội B'
+  attacker: '&cĐội tấn công'
+  defender: '&bĐội phòng thủ'
+  observer: '&7Quan sát viên'
+agents:
+  innova:
+    skill:
+      x:
+        name: 'Bắn bom nước'
+        description: 'Đặt xuống một ụ súng tồn tại trong %turret_activation_time% giây. Mỗi giây, ụ súng bắn ra một quả bom nước về phía kẻ địch đầu tiên trong vòng %activation_range% ô, gây sát thương và làm chậm kẻ đó. Trước khi ụ súng biến mất, nó bắn một loạt gồm %max_bomb_amount% quả bom về mọi phía xung quanh.'
+      c:
+        name: 'Bốc hơi'
+        description: 'Bắn ra một mũi tên về phía trước. Mũi tên sẽ phát hiện kẻ địch đầu tiên trong bán kính %detect-range% ô và bám theo kẻ đó cho đến khi trúng hắn. Mũi tên khiến kẻ địch bị lơ lửng trong %levitation-duration% giây'
+      ultimate:
+        name: 'Thủy triều cất tiếng'
+
+  moroe:
+    skill:
+      x:
+        name: 'Điện xuyên thấu'
+        description: 'Bắn một tia điện về phía trước. Sau %delay% giây, tia điện to ra, gây sát thương và làm chậm kẻ địch trúng chiêu trong %slow_duration% giây.'
+      c:
+        name: 'Lá chắn điện từ'
+        description: 'Bao bọc bản thân bởi một lá chắn giúp giảm sát thương nhận vào đi %damage_reduce%% trong %duration% giây'
+      ultimate:
+        name: 'Chạm đỉnh cao thế'
+        description: 'Tạo ra một làn sóng điện lan dần ra xung quanh (Tối đa: %max_range% ô) trói chân toàn bộ kẻ địch trong %stun_duration% giây. Đồng thời, bắn một tia điện gây sát thương về phía kẻ địch gần nhất. Tia điện này lan sang tối đa %max_enemy% kẻ địch.'
+  winnin:
+    skill:
+      x:
+        name: 'Bom lăn'
+        description: 'Lăn một quả bom về phía trước gây %damage% sát thương lên kẻ địch xung quanh bán kính %range% ô tại vị trí phát nổ. Sẽ phát nổ sớm khi va chạm phải địa hình.'
+      c:
+        name: 'Keo siêu dính'
+        description: 'Ném một hợp chất keo về phía trước. Chất keo sẽ nằm lại trên mặt đất và giữ chân toàn bộ người chơi (kể cả đồng minh) trong vòng %duration% giây và đẩy lùi bản thân ra sau.'
+      ultimate:
+        name: 'Gọi cứu trợ'
+        description: 'Gọi xuống một quả bom khổng lồ tại vị trí chỉ định trước, gây %damage% sát thương lên tất cả kẻ địch trong bán kính %range% ô.'
+        status:
+          activate: '&6Xác định vị trí thả bom: &a&lBật'
+          deactivate: '&6Xác định vị trí thả bom: &c&lTắt'
+        place-notify: '&eVui lòng tìm vị trí thích hợp để bắt đầu thả bom. Nhấn &achuột trái &eđể xác định vị trí.'
+        target-block-invalid: '&cVui lòng đặt thanh cứu viện xuống mặt đất !'

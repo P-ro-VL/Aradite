@@ -1,0 +1,8 @@
+name: Aradite
+version: DEVELOPMENT-1.0
+author: phongphong28
+main: aradite.Aradite
+api-version: 1.13
+depend: [PDXMantleCore]
+commands:
+  aradite:
