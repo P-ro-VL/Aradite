@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ARADITE.iml" filepath="$PROJECT_DIR$/ARADITE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Aradite.iml" filepath="$PROJECT_DIR$/Aradite.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api/api.iml" filepath="$PROJECT_DIR$/api/api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/plugin.iml" filepath="$PROJECT_DIR$/plugin/plugin.iml" />
     </modules>
   </component>
 </project>

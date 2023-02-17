@@ -1,0 +1,4 @@
+name: Api
+version: '${project.version}'
+main: com.github.tezvn.aradite.api.Api
+api-version: 1.16
