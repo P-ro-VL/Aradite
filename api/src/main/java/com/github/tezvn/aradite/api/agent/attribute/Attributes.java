@@ -1,10 +1,27 @@
 package com.github.tezvn.aradite.api.agent.attribute;
 
-import com.github.tezvn.aradite.impl.agent.attribute.BaseAttribute;
+import com.google.common.collect.Maps;
+
+import java.util.Map;
 
 public class Attributes {
 
-    public static final BaseAttribute DEFAULT_BASE_ATTRIBUTE = new BaseAttribute();
+    public static final Attribute DEFAULT_BASE_ATTRIBUTE = new Attribute() {
+
+        private final Map<AttributeType, Double> attributes = Maps.newConcurrentMap();
+
+        @Override
+        public Map<AttributeType, Double> getAttributeMap() {
+            return this.attributes;
+        }
+
+        @Override
+        public Attribute set(AttributeType type, double value) {
+            this.attributes.put(type, value);
+            return this;
+        }
+
+    };
 
     static {
         DEFAULT_BASE_ATTRIBUTE.set(AttributeType.MAX_HEALTH, 200d);

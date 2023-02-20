@@ -1,7 +1,6 @@
 package com.github.tezvn.aradite.api.weapon;
 
 import com.github.tezvn.aradite.api.match.Match;
-import com.github.tezvn.aradite.impl.AraditeImpl;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
@@ -25,28 +24,28 @@ public interface Weapon {
     /**
      * Return the ID of the weapon.
      */
-    public String getID();
+    String getID();
 
     /**
      * Return the category of the weapon.
      */
-    public WeaponCategory getCategory();
+    WeaponCategory getCategory();
 
     /**
      * Return the display name of the weapon.
      */
-    public String getDisplayName();
+    String getDisplayName();
 
     /**
      * Return the weapon's material.
      */
-    public Material getMaterial();
+    Material getMaterial();
 
     /**
      * Return {@code true} if the weapon is melee, {@code false} if the weapon is
      * gun.
      */
-    public boolean isMelee();
+    boolean isMelee();
 
     /**
      * Return {@code true} if the weapon can be sub weapon.<br>
@@ -59,18 +58,18 @@ public interface Weapon {
     /**
      * Return the meta of the weapon.
      */
-    public WeaponMeta getMeta();
+    WeaponMeta getMeta();
 
     /**
      * Return the type of the weapon.
      */
-    public WeaponType getWeaponType();
+    WeaponType getWeaponType();
 
     /**
      * The model data number of the default skin weapon.
      * The number must be a 7-digit number and different from others' ones.
      */
-    public int getCustomModelData();
+    int getCustomModelData();
 
     /**
      * Get the {@link ItemStack} form of the weapon with the given skin.
@@ -101,8 +100,8 @@ public interface Weapon {
 
         String category = getCategory().toString().toLowerCase();
 
-        NamespacedKey key = new NamespacedKey(AraditeImpl.getInstance(), category + "-item");
-        NamespacedKey idKey = new NamespacedKey(AraditeImpl.getInstance(), "weapon-id");
+        NamespacedKey key = new NamespacedKey("aradite", category + "-item");
+        NamespacedKey idKey = new NamespacedKey("aradite", "weapon-id");
 
         ItemStack itemStack = new ItemStack(getMaterial());
 
@@ -126,7 +125,7 @@ public interface Weapon {
     /**
      * Return the lore of the weapon. The lore will contain all its statistics and attributes.
      */
-    public List<String> getLore();
+    List<String> getLore();
 
     /**
      * Get the {@link ItemStack} form of the weapon with the default skin.
@@ -143,5 +142,5 @@ public interface Weapon {
      * @param target Entity
      * @param e      The damage event.
      */
-    public void onDamage(Match match, Player dmger, LivingEntity target, Event e);
+    void damage(Match match, Player dmger, LivingEntity target, Event e);
 }

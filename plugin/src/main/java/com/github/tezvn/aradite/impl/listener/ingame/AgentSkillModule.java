@@ -50,7 +50,7 @@ public class AgentSkillModule implements Listener {
 
         try {
             e.setCancelled(true);
-            Agent agentInstance = agentType.getWrapper().newInstance();
+            Agent agentInstance = AraditeImpl.getInstance().getAgentManager().createNewInstance(agentType);
             Skill skill = agentInstance.getSkills().get(skillType);
 
             RayTraceResult rayTraceResult = LocationUtils.rayTraceEntities(player.getEyeLocation(),

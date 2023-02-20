@@ -16,10 +16,8 @@ import java.util.Map;
 
 public class Bucky extends AbstractGun {
     public Bucky() {
-        super("BUCKY", "Bucky", GunType.SHORTGUN);
+        super("bucky", "Bucky", GunType.SHORTGUN);
         setScopable(false);
-
-        GunMeta meta = new AbstractGunMeta();
 
         Map<GunMetaType, Double> attributeMap = Maps.newHashMap();
 
@@ -32,7 +30,7 @@ public class Bucky extends AbstractGun {
         attributeMap.put(GunMetaType.RESERVE, 2d);
         attributeMap.put(GunMetaType.WALL_PENETRATION, (double) WallPenetration.NONE.ordinal());
         attributeMap.put(GunMetaType.SOUND_RANGE, 15d);
-        meta.setAttribute(attributeMap);
+        getMeta().setAttribute(attributeMap);
 
         Table<IntRange, BodyPart, Integer> partDamage = HashBasedTable.create();
 
@@ -40,25 +38,28 @@ public class Bucky extends AbstractGun {
         partDamage.put(firstRange, BodyPart.HEAD, 3);
         partDamage.put(firstRange, BodyPart.BODY, 5);
         partDamage.put(firstRange, BodyPart.LEGS, 7);
+        partDamage.put(firstRange, BodyPart.HANDS, 8);
 
         IntRange secondRange = IntRange.of(8, 16);
         partDamage.put(secondRange, BodyPart.HEAD, 1);
         partDamage.put(secondRange, BodyPart.BODY, 2);
         partDamage.put(secondRange, BodyPart.LEGS, 1);
+        partDamage.put(firstRange, BodyPart.HANDS, 8);
 
         IntRange thirdRange = IntRange.of(16, 20);
         partDamage.put(thirdRange, BodyPart.HEAD, 1);
         partDamage.put(thirdRange, BodyPart.BODY, 2);
         partDamage.put(thirdRange, BodyPart.LEGS, 2);
+        partDamage.put(firstRange, BodyPart.HANDS, 8);
 
         IntRange fourthRange = IntRange.of(20, 50);
         partDamage.put(fourthRange, BodyPart.HEAD, 2);
         partDamage.put(fourthRange, BodyPart.BODY, 3);
         partDamage.put(fourthRange, BodyPart.LEGS, 3);
+        partDamage.put(firstRange, BodyPart.HANDS, 8);
 
-        meta.setDamageTable(partDamage);
+        getMeta().setDamageTable(partDamage);
 
-        setMeta(meta);
     }
 
     @Override

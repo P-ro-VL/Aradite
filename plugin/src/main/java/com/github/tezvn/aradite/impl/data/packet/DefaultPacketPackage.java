@@ -10,8 +10,8 @@ import java.util.Map;
 public class DefaultPacketPackage<T> implements PacketPackage<T> {
 
 	private T singleData;
-	private Map<String, T> mapData = Maps.newHashMap();
-	private List<T> listData = Lists.newArrayList();
+	private final Map<String, T> mapData = Maps.newHashMap();
+	private final List<T> listData = Lists.newArrayList();
 
 	public DefaultPacketPackage() {
 	}

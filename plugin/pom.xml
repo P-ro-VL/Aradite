@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>aradite-core</artifactId>
-    <version>${plugin.version}</version>
+    <artifactId>aradite</artifactId>
+    <version>core</version>
     <packaging>jar</packaging>
 
     <name>plugin</name>
@@ -22,6 +22,7 @@
     </properties>
 
     <build>
+        <finalName>Aradite-${plugin.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -35,7 +36,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.4.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -53,33 +54,28 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <includes>
+                    <include>plugin.yml</include>
+                    <include>config.yml</include>
+                    <include>lang/vi-VN.yml</include>
+                </includes>
             </resource>
         </resources>
     </build>
 
-    <repositories>
-        <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>com.github.tezvn</groupId>
-            <artifactId>aradite-api</artifactId>
-            <version>${plugin.version}</version>
+            <artifactId>aradite</artifactId>
+            <version>api</version>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.16.5-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../libs/spigot-1.16.5.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -96,6 +92,7 @@
             <artifactId>netty-handler</artifactId>
             <version>5.0.0.Alpha2</version>
         </dependency>
+
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>

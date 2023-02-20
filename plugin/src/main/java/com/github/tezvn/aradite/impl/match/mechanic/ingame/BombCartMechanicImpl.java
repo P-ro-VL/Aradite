@@ -2,22 +2,22 @@ package com.github.tezvn.aradite.impl.match.mechanic.ingame;
 
 import com.github.tezvn.aradite.api.Aradite;
 import com.github.tezvn.aradite.api.match.Match;
+import com.github.tezvn.aradite.api.match.MatchScore;
 import com.github.tezvn.aradite.api.match.mechanic.MechanicType;
+import com.github.tezvn.aradite.api.match.mechanic.ingame.BombCartMechanic;
+import com.github.tezvn.aradite.api.packet.type.PlayerInGameMVPPacket;
 import com.github.tezvn.aradite.api.task.AraditeTask;
+import com.github.tezvn.aradite.api.team.MatchTeam;
 import com.github.tezvn.aradite.api.team.TeamRole;
 import com.github.tezvn.aradite.api.team.type.Attacker;
 import com.github.tezvn.aradite.api.team.type.Defender;
 import com.github.tezvn.aradite.api.world.MatchLocationType;
 import com.github.tezvn.aradite.api.world.MatchMap;
+import com.github.tezvn.aradite.api.packet.PacketType;
 import com.github.tezvn.aradite.impl.AraditeImpl;
-import com.github.tezvn.aradite.impl.data.packet.PacketType;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameMVPPacket;
-import com.github.tezvn.aradite.impl.match.MatchScore;
 import com.github.tezvn.aradite.impl.match.mechanic.AbstractMechanic;
 import com.github.tezvn.aradite.impl.task.AsyncTimerTask;
-import com.github.tezvn.aradite.impl.team.MatchTeam;
 import com.github.tezvn.aradite.impl.util.LocationUtils;
-import com.sun.org.apache.bcel.internal.generic.PUSH;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -33,7 +33,6 @@ import pdx.mantlecore.item.ItemCheckFactory;
 import pdx.mantlecore.java.StringUtils;
 import pdx.mantlecore.math.PrimaryMath;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.ExecutionException;
@@ -42,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class BombCartMechanicImpl extends AbstractMechanic {
+public class BombCartMechanicImpl extends AbstractMechanic implements BombCartMechanic {
 
     public static final int PUSH_MINECART_RANGE = 5, TOTAL_TIME_TO_PUSH = 180, DEFUSING_TIME = 8,
             TOTAL_PHASE_AMOUNT = 3;
@@ -168,7 +167,7 @@ public class BombCartMechanicImpl extends AbstractMechanic {
     private class BombCartMechanicTask extends AsyncTimerTask {
 
         private final String mechanicID;
-        private final BombCartMechanicImpl mechanic;
+        private final BombCartMechanic mechanic;
         private int clock = 0;
         private Location lookForwardLocation;
         private TeamRole winningTeam;
@@ -181,7 +180,7 @@ public class BombCartMechanicImpl extends AbstractMechanic {
 
         private int atkWin = 0, defWin = 0;
 
-        public BombCartMechanicTask(BombCartMechanicImpl mechanic) {
+        public BombCartMechanicTask(BombCartMechanic mechanic) {
             super(TimeUnit.SECONDS, 1, mechanic.getID() + "-" + getIndex());
 
             this.mechanicID = mechanic.getID();

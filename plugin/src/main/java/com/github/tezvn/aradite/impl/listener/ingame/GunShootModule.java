@@ -5,8 +5,9 @@ import com.github.tezvn.aradite.api.weapon.Weapon;
 import com.github.tezvn.aradite.api.weapon.gun.Gun;
 import com.github.tezvn.aradite.impl.AraditeImpl;
 import com.github.tezvn.aradite.impl.match.MatchManager;
-import com.github.tezvn.aradite.impl.recoil.ZoomRatio;
+import com.github.tezvn.aradite.api.recoil.ZoomRatio;
 import com.github.tezvn.aradite.impl.weapon.WeaponManager;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -33,7 +34,7 @@ public class GunShootModule implements Listener {
     public void shootAction(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item == null) return;
+        if (item.getType() == Material.AIR) return;
         if (event.getHand() != EquipmentSlot.HAND) return;
 
         WeaponManager manager =  AraditeImpl.getInstance().getWeaponManager();
@@ -60,13 +61,12 @@ public class GunShootModule implements Listener {
         }
 
         MatchManager matchManager =  AraditeImpl.getInstance().getMatchManager();
-        gun.onShoot(matchManager.getMatch(player), player, isScoping(player));
+        gun.shoot(matchManager.getMatch(player), player, isScoping(player));
     }
 
     @EventHandler
     public void onBulletHit(ProjectileHitEvent e) {
         Projectile projectile = e.getEntity();
-        if (projectile == null) return;
         if (projectile.hasMetadata("bullet")) e.setCancelled(true);
     }
 

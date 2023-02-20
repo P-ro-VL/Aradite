@@ -1,18 +1,19 @@
 package com.github.tezvn.aradite.impl.listener.ingame;
 
-import com.github.tezvn.aradite.api.Aradite;
+import com.github.tezvn.aradite.api.data.DataController;
+import com.github.tezvn.aradite.api.data.PlayerData;
 import com.github.tezvn.aradite.api.language.Language;
 import com.github.tezvn.aradite.api.match.Match;
+import com.github.tezvn.aradite.api.team.MatchTeam;
 import com.github.tezvn.aradite.api.weapon.Weapon;
 import com.github.tezvn.aradite.impl.AraditeImpl;
-import com.github.tezvn.aradite.impl.data.DataController;
-import com.github.tezvn.aradite.impl.data.Statistic;
-import com.github.tezvn.aradite.impl.data.global.PlayerDataStorage;
-import com.github.tezvn.aradite.impl.data.packet.PacketType;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacket;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameMVPPacket;
+import com.github.tezvn.aradite.impl.data.DataControllerImpl;
+import com.github.tezvn.aradite.api.data.Statistic;
+import com.github.tezvn.aradite.api.packet.PacketType;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacketImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameMVPPacketImpl;
 import com.github.tezvn.aradite.impl.event.AgentDeathEvent;
-import com.github.tezvn.aradite.impl.team.MatchTeam;
+import com.github.tezvn.aradite.impl.team.MatchTeamImpl;
 import org.bukkit.GameMode;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -29,7 +30,7 @@ public class AgentDeathModule implements Listener {
     public void onAgentDeath(AgentDeathEvent e) {
         Match match = e.getMatch();
 
-        PlayerInGameLastDamagePacket.DeathReason deathReason = e.getDeathReason();
+        PlayerInGameLastDamagePacketImpl.DeathReason deathReason = e.getDeathReason();
         Player killer = e.getKiller();
         Player player = e.getTarget();
         Weapon weapon = e.getWeapon();
@@ -45,27 +46,27 @@ public class AgentDeathModule implements Listener {
                 .replaceAll("%weapon%", weapon == null ? "Unknown" : weapon.getDisplayName())
                 .replaceAll("%skill%", skillName == null ? "Unknown" : skillName);
 
-        matchTeam.broadcast(MatchTeam.BroadcastType.NORMAL_CHAT, broadcast);
+        matchTeam.broadcast(MatchTeamImpl.BroadcastType.NORMAL_CHAT, broadcast);
 
         player.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, player.getEyeLocation(), 2);
 
         DataController dataController =  AraditeImpl.getInstance().getDataController();
 
-        PlayerDataStorage targetDataStorage = dataController.getUserData(player.getUniqueId());
+        PlayerData targetDataStorage = dataController.getUserData(player.getUniqueId());
         targetDataStorage.increase(Statistic.DEATH, 1);
 
-        PlayerInGameMVPPacket TARGETmvpPacket = (PlayerInGameMVPPacket)
+        PlayerInGameMVPPacketImpl TARGETmvpPacket = (PlayerInGameMVPPacketImpl)
                 match.retrieveProtocol(player).getPacket(PacketType.INGAME_MVP);
         TARGETmvpPacket.increaseByOne(Statistic.DEATH);
 
         if (killer != null) {
-            PlayerDataStorage killerDataStorage = dataController.getUserData(killer.getUniqueId());
+            PlayerData killerDataStorage = dataController.getUserData(killer.getUniqueId());
             killerDataStorage.increase(Statistic.KILL, 1);
 
-            PlayerInGameMVPPacket KILLERmvpPacket = match.retrieveProtocol(killer)
-                    .getPacket(PlayerInGameMVPPacket.class);
+            PlayerInGameMVPPacketImpl KILLERmvpPacket = match.retrieveProtocol(killer)
+                    .getPacket(PlayerInGameMVPPacketImpl.class);
             KILLERmvpPacket.increaseByOne(Statistic.KILL);
-            KILLERmvpPacket.addMVPPoint(PlayerInGameMVPPacket.MVPStatistics.KILL, 1);
+            KILLERmvpPacket.addMVPPoint(PlayerInGameMVPPacketImpl.MVPStatistics.KILL, 1);
         }
 
         TaskQueue.runSync( AraditeImpl.getInstance(), () -> {

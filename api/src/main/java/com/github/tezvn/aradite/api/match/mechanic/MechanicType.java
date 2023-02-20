@@ -1,7 +1,7 @@
 package com.github.tezvn.aradite.api.match.mechanic;
 
-import com.github.tezvn.aradite.match.mechanic.ingame.BombCartMechanic;
-import com.github.tezvn.aradite.match.mechanic.ingame.CaptureMechanic;
+import com.github.tezvn.aradite.api.match.mechanic.ingame.BombCartMechanic;
+import com.github.tezvn.aradite.api.match.mechanic.ingame.CaptureMechanic;
 
 /**
  * Types of available mechanics.

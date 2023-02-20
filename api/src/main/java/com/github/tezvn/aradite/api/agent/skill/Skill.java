@@ -4,21 +4,14 @@ import com.github.tezvn.aradite.api.agent.Agents;
 import com.github.tezvn.aradite.api.match.Match;
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.util.ChatPaginator;
-import pdx.mantlecore.item.ItemBuilder;
-import pdx.mantlecore.math.PrimaryMath;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -42,11 +35,21 @@ public interface Skill {
     Agents getOwner();
 
     /**
+     * Return the display name of the skill.
+     */
+    String getDisplayName();
+
+    /**
      * Set the display name for the skill.
      *
      * @param displayName New display name
      */
     void setDisplayName(String displayName);
+
+    /**
+     * Return the ID of the skill.
+     */
+    String getID();
 
     /**
      * Set the id for the skill.
@@ -56,20 +59,9 @@ public interface Skill {
     void setID(String id);
 
     /**
-     * Return the display name of the skill.
-     */
-    String getDisplayName();
-
-    /**
-     * Return the ID of the skill.
-     */
-    String getID();
-
-    /**
      * Each skill has some special stats. Those stats will be improved when the
      * skill is upgraded. So we need some math expressions to calculate them.<br>
      * Each stat will have its own expression, and can be converted into
-     * {@code double} value by using {@link PrimaryMath#eval(String)}.
      */
     Map<String, String> getSkillEvalExpressions();
 
@@ -77,18 +69,7 @@ public interface Skill {
      * The skill's displaying icon on player's hotbar.
      */
     //TODO TEMPORARY ICON FOR TESTING
-    default ItemStack getIcon() {
-        String skillColor = getType() == SkillType.ACTIVE_X ? "§c" : (getType() == SkillType.ACTIVE_C ? "§b" : "§6§l");
-        ItemStack item = new ItemBuilder(Material.SLIME_BALL).setDisplayName(skillColor + getDisplayName())
-                .addLoreLine("§7Nhấn để kích hoạt chiêu này.")
-                .create();
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(SKILL_DATA, PersistentDataType.STRING,
-                getOwner().toString() + "•" + getType().toString());
-        meta.setLore(Arrays.asList(ChatPaginator.wordWrap(getDescription(), 28)));
-        item.setItemMeta(meta);
-        return item;
-    }
+    ItemStack getIcon();
 
     /**
      * Set the calculating expression for the given {@code key}.

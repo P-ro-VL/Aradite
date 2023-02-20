@@ -7,7 +7,7 @@ public interface WeaponMeta {
     /**
      * Return all available skins of the weapon.
      */
-    public List<WeaponSkin> getSkins();
+    List<WeaponSkin> getSkins();
 
     /**
      * Register a new skin for the weapon.

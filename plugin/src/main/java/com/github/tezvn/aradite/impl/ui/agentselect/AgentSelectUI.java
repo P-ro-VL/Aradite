@@ -1,25 +1,28 @@
 package com.github.tezvn.aradite.impl.ui.agentselect;
 
-import com.github.tezvn.aradite.api.Aradite;
 import com.github.tezvn.aradite.api.agent.Agent;
 import com.github.tezvn.aradite.api.agent.AgentMasteryRank;
 import com.github.tezvn.aradite.api.agent.Agents;
 import com.github.tezvn.aradite.api.agent.texture.Texture;
 import com.github.tezvn.aradite.api.agent.texture.TextureType;
+import com.github.tezvn.aradite.api.data.DataController;
+import com.github.tezvn.aradite.api.data.PlayerData;
 import com.github.tezvn.aradite.api.language.Language;
+import com.github.tezvn.aradite.api.language.Placeholder;
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.api.packet.PacketPackage;
+import com.github.tezvn.aradite.api.team.MatchTeam;
 import com.github.tezvn.aradite.api.team.TeamRole;
 import com.github.tezvn.aradite.api.team.type.UndefinedTeam;
 import com.github.tezvn.aradite.api.weapon.Weapon;
 import com.github.tezvn.aradite.api.weapon.WeaponType;
 import com.github.tezvn.aradite.impl.AraditeImpl;
-import com.github.tezvn.aradite.impl.data.DataController;
-import com.github.tezvn.aradite.impl.data.global.PlayerDataStorage;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerPreGameSelectPacket;
-import com.github.tezvn.aradite.impl.language.Placeholder;
+import com.github.tezvn.aradite.impl.agent.type.innova.InnovaCharacter;
+import com.github.tezvn.aradite.impl.agent.type.moroe.MoroeCharacter;
+import com.github.tezvn.aradite.impl.agent.type.winnin.WinninCharacter;
+import com.github.tezvn.aradite.impl.data.DataControllerImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerPreGameSelectPacketImpl;
 import com.github.tezvn.aradite.impl.task.type.AgentSelectTask;
-import com.github.tezvn.aradite.impl.team.MatchTeam;
 import com.github.tezvn.aradite.impl.weapon.WeaponManager;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -52,28 +55,22 @@ public class AgentSelectUI extends RunnableMenu {
 
     private static ItemStack SUB_WEAPON_NEXT = new ItemBuilder(Material.PLAYER_HEAD, lang.getString("ui.agent-select.weapon-select.next-weapon"), "").setTextureURL("63fabc3891c962c913959d65be90daa5de1211fa4087dae386ff4ed4248f").create();
     private static ItemStack SUB_WEAPON_PREVIOUS = new ItemBuilder(Material.PLAYER_HEAD, lang.getString("ui.agent-select.weapon-select.previous-weapon"), "").setTextureURL("91459cfc44cc51ddf27988596d2de8ac8556e93d7946219cf64c90c8c05fca").create();
-
-    private int[] enemySlots = {17, 26, 35}, allySlots = {9, 18, 27}, arrowInstruction = {16, 25, 34, 10, 19, 28};
-    private int countdownSlot = 4, currentPage = 0, pickedAgentAvatar = 13, mainWeapon = 40, subWeapon = 49;
-    private int[] agentSlots = {11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 29, 30, 31, 32, 33};
-
-    private List<Player> allies = Lists.newArrayList(), enemies = Lists.newArrayList();
     protected Player player;
     protected AgentSelectTask task;
-    private PlayerPreGameSelectPacket packet;
-    private PacketPackage<String> packetPackage;
     protected Match match;
-
-    private Map<String, Pair<Integer, Agents>> selectData = Maps.newHashMap();
-    private String oldName = "";
-
-    private boolean updated = false;
-    private int mainWeaponCurrentIndex = 0, subWeaponCurrentIndex = 0;
-
     WeaponManager weaponManager = AraditeImpl.getInstance().getWeaponManager();
     List<Weapon> mainWeapons = weaponManager.getWeaponsByType(WeaponType.MAIN);
     List<Weapon> subWeapons = weaponManager.getWeaponsByType(WeaponType.SUB);
-
+    private int[] enemySlots = {17, 26, 35}, allySlots = {9, 18, 27}, arrowInstruction = {16, 25, 34, 10, 19, 28};
+    private int countdownSlot = 4, currentPage = 0, pickedAgentAvatar = 13, mainWeapon = 40, subWeapon = 49;
+    private int[] agentSlots = {11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 29, 30, 31, 32, 33};
+    private List<Player> allies = Lists.newArrayList(), enemies = Lists.newArrayList();
+    private PlayerPreGameSelectPacketImpl packet;
+    private PacketPackage<String> packetPackage;
+    private Map<String, Pair<Integer, Agents>> selectData = Maps.newHashMap();
+    private String oldName = "";
+    private boolean updated = false;
+    private int mainWeaponCurrentIndex = 0, subWeaponCurrentIndex = 0;
     private String currentMainWeaponSkin = "default";
     private String currentSubWeaponSkin = "default";
 
@@ -181,9 +178,9 @@ public class AgentSelectUI extends RunnableMenu {
             if (selectedAgent == null) continue;
 
             try {
-                Agent instance = selectedAgent.getWrapper().newInstance();
+                Agent agent = AraditeImpl.getInstance().getAgentManager().createNewInstance(selectedAgent);
                 setItem(slot, new MenuItem(new ItemBuilder(Material.PLAYER_HEAD, "§f§l" +
-                        instance.getDisplayName(), "§r §r §a" + pLAYER.getName()).setTextureURL(instance.getTextures().get(TextureType.SKULL).getData())) {
+                        agent.getDisplayName(), "§r §r §a" + pLAYER.getName()).setTextureURL(agent.getTextures().get(TextureType.SKULL).getData())) {
                     @Override
                     public void onClick(InventoryClickEvent e) {
                         e.setCancelled(true);
@@ -198,7 +195,7 @@ public class AgentSelectUI extends RunnableMenu {
         boolean hasPickedAgent = data.getValue() != null;
 
         DataController database = AraditeImpl.getInstance().getDataController();
-        PlayerDataStorage dataStorage = database.getUserData(player.getUniqueId());
+        PlayerData dataStorage = database.getUserData(player.getUniqueId());
 
         if (hasPickedAgent && !updated) {
             this.updated = true;
@@ -347,7 +344,7 @@ public class AgentSelectUI extends RunnableMenu {
                         currentSubWeaponSkin = "default";
                     }
                 });
-            }
+            }//build di tuan
 
             if (subWeaponCurrentIndex > 0) {
                 setItem(subWeapon - 1, new MenuItem(new ItemBuilder(SUB_WEAPON_PREVIOUS).addLoreLine(lang.getString("ui.agent-select.click-to-previous"), "", lang.getString("ui.agent-select.weapon-select.before-weapon"), subWeapons.get(subWeaponCurrentIndex - 1).getDisplayName())) {
@@ -375,28 +372,23 @@ public class AgentSelectUI extends RunnableMenu {
                 }
 
                 Agents agentEnum = availableAgents.get(i);
-                Class<?> agentWrapper = agentEnum.getWrapper();
-                try {
-                    Agent agent = (Agent) agentWrapper.newInstance();
-                    Texture headTexture = agent.getTextures().get(TextureType.SKULL);
-                    setItem(agentSlots[index], new MenuItem(new ItemBuilder(Material.PLAYER_HEAD).setDisplayName("§f§l" + agent.getDisplayName()).setTextureURL(headTexture.getData())) {
-                        @Override
-                        public void onClick(InventoryClickEvent e) {
-                            e.setCancelled(true);
-                            selectData.put(player.getName(), Pair.of(slotPosition, agentEnum));
-                            player.playSound(player.getEyeLocation(), Sound.BLOCK_BELL_USE, 1, 1);
+                Agent agent = AraditeImpl.getInstance().getAgentManager().createNewInstance(agentEnum);
+                Texture headTexture = agent.getTextures().get(TextureType.SKULL);
+                setItem(agentSlots[index], new MenuItem(new ItemBuilder(Material.PLAYER_HEAD).setDisplayName("§f§l" + agent.getDisplayName()).setTextureURL(headTexture.getData())) {
+                    @Override
+                    public void onClick(InventoryClickEvent e) {
+                        e.setCancelled(true);
+                        selectData.put(player.getName(), Pair.of(slotPosition, agentEnum));
+                        player.playSound(player.getEyeLocation(), Sound.BLOCK_BELL_USE, 1, 1);
 
-                            packetPackage.write("agent-type", agentEnum.toString());
+                        packetPackage.write("agent-type", agentEnum.toString());
 
-                            match.getReport().log("[AGENT_SELECT] " + player.getName() + " has selected " + agentEnum.toString());
-                            dataStorage.increaseAgentPickData(agentEnum);
+                        match.getReport().log("[AGENT_SELECT] " + player.getName() + " has selected " + agentEnum.toString());
+                        dataStorage.increaseAgentPickData(agentEnum);
 
-                            task.nextPlayer();
-                        }
-                    });
-                } catch (InstantiationException | IllegalAccessException e1) {
-                    e1.printStackTrace();
-                }
+                        task.nextPlayer();
+                    }
+                });
             }
         }
 
@@ -451,6 +443,14 @@ public class AgentSelectUI extends RunnableMenu {
 
         NOT_PICKED_ENEMY("4fd5bde994e0a647af1823681a613c2bfc3d9736f889dbf8c3bbba5a13f8ed");
 
+        static {
+            Inventory inventory = Bukkit.createInventory(null, 54, "abc");
+            for (Icon icon : values()) {
+                ItemStack item = new ItemBuilder(Material.PLAYER_HEAD).setTextureURL(icon.getURL()).create();
+                inventory.setItem(0, item);
+            }
+        }
+
         private String url;
 
         private Icon(String url) {
@@ -459,14 +459,6 @@ public class AgentSelectUI extends RunnableMenu {
 
         public String getURL() {
             return url;
-        }
-
-        static {
-            Inventory inventory = Bukkit.createInventory(null, 54, "abc");
-            for (Icon icon : values()) {
-                ItemStack item = new ItemBuilder(Material.PLAYER_HEAD).setTextureURL(icon.getURL()).create();
-                inventory.setItem(0, item);
-            }
         }
     }
 

@@ -1,19 +1,22 @@
 package com.github.tezvn.aradite.impl.match.mechanic.ingame;
 
 import com.github.tezvn.aradite.api.match.Match;
+import com.github.tezvn.aradite.api.match.MatchScore;
 import com.github.tezvn.aradite.api.match.mechanic.MechanicType;
 import com.github.tezvn.aradite.api.match.mechanic.ingame.CaptureMechanic;
+import com.github.tezvn.aradite.api.packet.type.PlayerInGameMVPPacket;
 import com.github.tezvn.aradite.api.task.AraditeTask;
+import com.github.tezvn.aradite.api.team.MatchTeam;
 import com.github.tezvn.aradite.api.team.TeamRole;
 import com.github.tezvn.aradite.api.team.type.UndefinedTeam;
 import com.github.tezvn.aradite.api.world.MatchLocationType;
 import com.github.tezvn.aradite.api.world.MatchMap;
-import com.github.tezvn.aradite.impl.data.packet.PacketType;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameMVPPacket;
-import com.github.tezvn.aradite.impl.match.MatchScore;
+import com.github.tezvn.aradite.api.packet.PacketType;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameMVPPacketImpl;
+import com.github.tezvn.aradite.impl.match.MatchScoreImpl;
 import com.github.tezvn.aradite.impl.match.mechanic.AbstractMechanic;
 import com.github.tezvn.aradite.impl.task.AsyncTimerTask;
-import com.github.tezvn.aradite.impl.team.MatchTeam;
+import com.github.tezvn.aradite.impl.team.MatchTeamImpl;
 import com.github.tezvn.aradite.impl.util.LocationUtils;
 import com.google.common.collect.Maps;
 import org.bukkit.*;
@@ -137,7 +140,7 @@ public class CaptureMechanicImpl extends AbstractMechanic implements CaptureMech
 
     private class CaptureMechanicTask extends AsyncTimerTask {
 
-        private final CaptureMechanicImpl mechanic;
+        private final CaptureMechanic mechanic;
         private BossBar captureScoreBossBar;
         private String bossBarTitlePattern = "%team_a_name%          §b%a_score% §f§l|%capturing_team_color%⦿§f§l| §c%b_score%          %team_b_name%";
 
@@ -153,7 +156,7 @@ public class CaptureMechanicImpl extends AbstractMechanic implements CaptureMech
          */
         private UndefinedTeam.Type winningTeam;
 
-        public CaptureMechanicTask(CaptureMechanicImpl mechanic) {
+        public CaptureMechanicTask(CaptureMechanic mechanic) {
             super(TimeUnit.SECONDS, 1, mechanic.getID() + "-" + mechanic.getIndex());
             this.mechanicID = mechanic.getID();
             this.mechanic = mechanic;
@@ -246,9 +249,9 @@ public class CaptureMechanicImpl extends AbstractMechanic implements CaptureMech
                 mvpPoint += POINT_PER_CAPTURE - surroundPlayers.size();
                 this.mvpMap.put(player, mvpPoint);
 
-                PlayerInGameMVPPacket mvpPacket = (PlayerInGameMVPPacket) getMatch().retrieveProtocol(player)
+                PlayerInGameMVPPacket mvpPacket = (PlayerInGameMVPPacketImpl) getMatch().retrieveProtocol(player)
                         .getPacket(PacketType.INGAME_MVP);
-                mvpPacket.addMVPPoint(PlayerInGameMVPPacket.MVPStatistics.CAPTURE_POINT, 5);
+                mvpPacket.addMVPPoint(PlayerInGameMVPPacketImpl.MVPStatistics.CAPTURE_POINT, 5);
             });
 
             /*

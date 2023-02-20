@@ -16,8 +16,11 @@ import java.util.Map;
 public class AbstractGunMeta implements GunMeta {
 
     private Table<IntRange, BodyPart, Integer> damageTable = HashBasedTable.create();
-    private List<WeaponSkin> skins = Lists.newArrayList();
-    private Map<GunMetaType, Double> attribute = Maps.newHashMap();
+    private final List<WeaponSkin> skins = Lists.newArrayList();
+    private final Map<GunMetaType, Double> attribute = Maps.newHashMap();
+
+    public AbstractGunMeta() {
+    }
 
     @Override
     public List<WeaponSkin> getSkins() {

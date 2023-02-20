@@ -2,14 +2,22 @@ package com.github.tezvn.aradite.impl.agent.skill;
 
 import com.github.tezvn.aradite.api.agent.Agent;
 import com.github.tezvn.aradite.api.agent.skill.Skill;
+import com.github.tezvn.aradite.api.agent.skill.SkillType;
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.impl.AraditeImpl;
 import com.github.tezvn.aradite.api.agent.Agents;
 import com.github.tezvn.aradite.api.language.Language;
 import com.google.common.collect.Maps;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.ChatPaginator;
+import pdx.mantlecore.item.ItemBuilder;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -66,7 +74,7 @@ public abstract class SkillImpl implements Skill {
 	}
 
 	public Player getNearestEnemy(Location location, Match match, Player agent, int range) {
-		return getNearbyPlayers(location, match, agent, range).get(0);
+		return getNearbyPlayers(location, match, agent, range).stream().findFirst().orElse(null);
 	}
 
 	public List<Player> getNearbyPlayers(Location location, Match match, Player agent, int range) {
@@ -77,5 +85,19 @@ public abstract class SkillImpl implements Skill {
 					Player p = (Player) entity;
 					return !match.getMatchTeam().isOnSameTeam(p, agent);
 				}).stream().map(entity -> (Player) entity).collect(Collectors.toList());
+	}
+
+	@Override
+	public ItemStack getIcon() {
+		String skillColor = getType() == SkillType.ACTIVE_X ? "§c" : (getType() == SkillType.ACTIVE_C ? "§b" : "§6§l");
+		ItemStack item = new ItemBuilder(Material.SLIME_BALL).setDisplayName(skillColor + getDisplayName())
+				.addLoreLine("§7Nhấn để kích hoạt chiêu này.")
+				.create();
+		ItemMeta meta = item.getItemMeta();
+		meta.getPersistentDataContainer().set(SKILL_DATA, PersistentDataType.STRING,
+				getOwner().toString() + "•" + getType().toString());
+		meta.setLore(Arrays.asList(ChatPaginator.wordWrap(getDescription(), 28)));
+		item.setItemMeta(meta);
+		return item;
 	}
 }

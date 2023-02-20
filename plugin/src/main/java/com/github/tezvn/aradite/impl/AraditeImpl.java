@@ -1,7 +1,16 @@
 package com.github.tezvn.aradite.impl;
 
 import com.github.tezvn.aradite.api.Aradite;
-import com.github.tezvn.aradite.impl.data.DataController;
+import com.github.tezvn.aradite.api.AraditeAPIProvider;
+import com.github.tezvn.aradite.api.agent.AgentManager;
+import com.github.tezvn.aradite.api.agent.type.Winnin;
+import com.github.tezvn.aradite.api.data.DataController;
+import com.github.tezvn.aradite.api.match.Match;
+import com.github.tezvn.aradite.impl.agent.AgentManagerImpl;
+import com.github.tezvn.aradite.impl.agent.type.innova.InnovaCharacter;
+import com.github.tezvn.aradite.impl.agent.type.moroe.MoroeCharacter;
+import com.github.tezvn.aradite.impl.agent.type.winnin.WinninCharacter;
+import com.github.tezvn.aradite.impl.data.DataControllerImpl;
 import com.github.tezvn.aradite.api.language.Language;
 import com.github.tezvn.aradite.api.language.LanguageManager;
 import com.github.tezvn.aradite.impl.listener.ingame.AgentDeathModule;
@@ -21,6 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pdx.mantlecore.menu.Menu;
 
 import java.lang.reflect.Field;
+import java.util.Objects;
 
 public class AraditeImpl extends JavaPlugin implements Aradite {
 
@@ -30,11 +40,13 @@ public class AraditeImpl extends JavaPlugin implements Aradite {
     private WeaponManager weaponManager;
     private DataController dataController;
     private MatchManager matchManager;
+    private AgentManager agentManager;
 
     @Override
     public void onEnable() {
         instance = this;
 
+        AraditeAPIProvider.register(new DefaultAraditeAPI(this));
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
 
@@ -42,6 +54,9 @@ public class AraditeImpl extends JavaPlugin implements Aradite {
         this.language = languageManager.getCurrentLanguage();
 
         turnOffAsyncCatcher();
+        /*Objects.requireNonNull(Bukkit.getPluginCommand("edit")).setExecutor(this);
+        Objects.requireNonNull(Bukkit.getPluginCommand("list")).setExecutor(this);
+        Objects.requireNonNull(Bukkit.getPluginCommand("join")).setExecutor(this);*/
         Bukkit.getPluginManager().registerEvents(new GunShootModule(), this);
         Bukkit.getPluginManager().registerEvents(new KnifeDamageModule(), this);
         Bukkit.getPluginManager().registerEvents(new AgentDeathModule(), this);
@@ -52,9 +67,12 @@ public class AraditeImpl extends JavaPlugin implements Aradite {
         weaponManager = new WeaponManager();
         weaponManager.register();
 
-        dataController = new DataController();
+        dataController = new DataControllerImpl();
 
         matchManager = new MatchManager();
+
+        agentManager = new AgentManagerImpl();
+        registerAgents();
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             matchManager.load();
@@ -82,8 +100,18 @@ public class AraditeImpl extends JavaPlugin implements Aradite {
         return language;
     }
 
+    public AgentManager getAgentManager() {
+        return agentManager;
+    }
+
     public static AraditeImpl getInstance() {
         return instance;
+    }
+
+    public void registerAgents(){
+        getAgentManager().registerAgentClass(WinninCharacter.class);
+        getAgentManager().registerAgentClass(MoroeCharacter.class);
+        getAgentManager().registerAgentClass(InnovaCharacter.class);
     }
 
     @Override
@@ -91,20 +119,20 @@ public class AraditeImpl extends JavaPlugin implements Aradite {
         if (args.length > 0) {
             Player player = (Player) sender;
 
-            if (args[0].equalsIgnoreCase("edit")) {
+            if (cmd.getName().equalsIgnoreCase("edit")) {
                 Menu.open(player, new SelectMatchToEditUI(0));
                 return true;
             }
 
-            if (args[0].equalsIgnoreCase("list")) {
+            if (cmd.getName().equalsIgnoreCase("list")) {
                 player.sendMessage("Available matches :");
                 matchManager.getAllAvailableMatches().forEach(match ->
                         player.sendMessage("- " + match.getUniqueID()));
                 return true;
             }
 
-            if(args[0].equalsIgnoreCase("join")){
-                DefaultMatch match = matchManager.getMatch(args[1]);
+            if(cmd.getName().equalsIgnoreCase("join")){
+                Match match = matchManager.getMatch(args[0]);
                 if(match != null) match.join(player);
                 return true;
             }
@@ -120,7 +148,7 @@ public class AraditeImpl extends JavaPlugin implements Aradite {
             Class<?> clazz = Class.forName("org.spigotmc.AsyncCatcher");
             Field field = clazz.getDeclaredField("enabled");
             field.setAccessible(true);
-            field.set(null, true);
+            field.set(null, false);
         }catch (Exception e) {
             e.printStackTrace();
         }

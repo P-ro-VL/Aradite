@@ -1,10 +1,10 @@
 package com.github.tezvn.aradite.api.weapon.gun;
 
-import com.github.tezvn.aradite.impl.AraditeImpl;
+import com.github.tezvn.aradite.api.AraditeAPIProvider;
 
 public enum GunType {
 
-    SHORTGUN(8, ShootMode.SHORTGUN),
+    SHORTGUN(8, ShootMode.SHOTGUN),
 
     RIFLE(30, ShootMode.RIFLE_AND_SMG),
 
@@ -42,7 +42,7 @@ public enum GunType {
      * Return the display name of the gun type.
      */
     public String getDisplayName() {
-        return AraditeImpl.getInstance().getLanguage().getString("gun-type." + this.toString().toLowerCase());
+        return AraditeAPIProvider.get().getLanguage().getString("gun-type." + this.toString().toLowerCase());
     }
 
 }

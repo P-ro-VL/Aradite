@@ -1,12 +1,12 @@
 package com.github.tezvn.aradite.api.weapon.knife;
 
 import com.github.tezvn.aradite.api.match.Match;
+import com.github.tezvn.aradite.api.packet.PacketType;
+import com.github.tezvn.aradite.api.packet.type.PlayerInGameAttributePacket;
+import com.github.tezvn.aradite.api.packet.type.PlayerInGameLastDamagePacket;
 import com.github.tezvn.aradite.api.weapon.Weapon;
 import com.github.tezvn.aradite.api.weapon.WeaponCategory;
 import com.github.tezvn.aradite.api.weapon.WeaponType;
-import com.github.tezvn.aradite.impl.data.packet.PacketType;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacket;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacket;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -29,21 +29,4 @@ public interface Knife extends Weapon {
         return WeaponCategory.KNIFE;
     }
 
-    @Override
-    default void onDamage(Match match, Player dmger, LivingEntity target, Event event) {
-        EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
-
-        if (target instanceof Player) {
-            Player entity = (Player) target;
-            if (match != null) {
-                PlayerInGameAttributePacket packet = (PlayerInGameAttributePacket) match.retrieveProtocol(entity)
-                        .getPacket(PacketType.INGAME_PLAYER_ATTRIBUTE);
-                PlayerInGameLastDamagePacket lastDamagePacket = (PlayerInGameLastDamagePacket) match.retrieveProtocol(entity)
-                        .getPacket(PacketType.INGAME_PLAYER_LAST_DAMAGE);
-                packet.damage(dmger.getName() + "•" + getID(), e.getDamage(), true, lastDamagePacket);
-            } else {
-                entity.damage(e.getDamage());
-            }
-        }
-    }
 }

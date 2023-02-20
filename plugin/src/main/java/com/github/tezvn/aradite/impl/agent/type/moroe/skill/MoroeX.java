@@ -1,13 +1,12 @@
 package com.github.tezvn.aradite.impl.agent.type.moroe.skill;
 
-import com.github.tezvn.aradite.api.Aradite;
 import com.github.tezvn.aradite.api.agent.Agents;
 import com.github.tezvn.aradite.api.agent.skill.SkillType;
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.impl.AraditeImpl;
 import com.github.tezvn.aradite.impl.agent.skill.SkillImpl;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacket;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacket;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacketImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacketImpl;
 import com.github.tezvn.aradite.impl.util.LocationUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -48,10 +47,10 @@ public class MoroeX extends SkillImpl {
                                 , 10));
                         LocationUtils.getNearbyPlayers(loc, 0.5).stream().filter(player ->
                                 !match.getMatchTeam().isOnSameTeam(agent, player)).forEach(player -> {
-                            PlayerInGameAttributePacket attributePacket = match.retrieveProtocol(player)
-                                    .getPacket(PlayerInGameAttributePacket.class);
+                            PlayerInGameAttributePacketImpl attributePacket = match.retrieveProtocol(player)
+                                    .getPacket(PlayerInGameAttributePacketImpl.class);
                             attributePacket.damage("SKILL:" + agent.getName() + "•Moroe•ACTIVE_X", DAMAGE, true,
-                                    match.retrieveProtocol(player).getPacket(PlayerInGameLastDamagePacket.class));
+                                    match.retrieveProtocol(player).getPacket(PlayerInGameLastDamagePacketImpl.class));
 
                             TaskQueue.runSync( AraditeImpl.getInstance(), () -> {
                                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, SLOW_DURATION * 20,

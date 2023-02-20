@@ -6,9 +6,9 @@ import com.github.tezvn.aradite.api.language.Language;
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.impl.AraditeImpl;
 import com.github.tezvn.aradite.impl.agent.skill.UltimateSkillImpl;
-import com.github.tezvn.aradite.impl.data.packet.PacketType;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacket;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacket;
+import com.github.tezvn.aradite.api.packet.PacketType;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacketImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacketImpl;
 import com.github.tezvn.aradite.impl.match.MatchManager;
 import com.google.common.collect.Maps;
 import net.md_5.bungee.api.ChatMessageType;
@@ -150,9 +150,9 @@ public class WinninUltimate extends UltimateSkillImpl {
 					loc.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 0, 0, 0, 0, 52);
 					this.cancel();
 					getNearbyPlayers(location, match, agent, DAMAGE_RANGE).forEach(player -> {
-						PlayerInGameAttributePacket targetData = (PlayerInGameAttributePacket) match
+						PlayerInGameAttributePacketImpl targetData = (PlayerInGameAttributePacketImpl) match
 								.retrieveProtocol(player).getPacket(PacketType.INGAME_PLAYER_ATTRIBUTE);
-						PlayerInGameLastDamagePacket targetLastDmgData = (PlayerInGameLastDamagePacket) match
+						PlayerInGameLastDamagePacketImpl targetLastDmgData = (PlayerInGameLastDamagePacketImpl) match
 								.retrieveProtocol(player).getPacket(PacketType.INGAME_PLAYER_LAST_DAMAGE);
 
 						targetData.damage("SKILL:" + agent.getName() + "•Winnin•ULTIMATE", dmg, false,

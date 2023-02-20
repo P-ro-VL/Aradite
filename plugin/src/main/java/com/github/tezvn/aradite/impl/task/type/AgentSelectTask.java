@@ -4,17 +4,19 @@ import com.github.tezvn.aradite.api.agent.attribute.Attributes;
 import com.github.tezvn.aradite.api.language.Language;
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.api.match.mechanic.MechanicType;
+import com.github.tezvn.aradite.api.packet.type.PlayerInGameData;
+import com.github.tezvn.aradite.api.team.MatchTeam;
 import com.github.tezvn.aradite.api.team.TeamRole;
 import com.github.tezvn.aradite.api.team.type.UndefinedTeam;
 import com.github.tezvn.aradite.api.weapon.WeaponType;
 import com.github.tezvn.aradite.impl.AraditeImpl;
-import com.github.tezvn.aradite.impl.data.packet.PacketType;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacket;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameData;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameSkillLevelPacket;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerPreGameSelectPacket;
+import com.github.tezvn.aradite.api.packet.PacketType;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacketImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameDataImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameSkillLevelPacketImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerPreGameSelectPacketImpl;
 import com.github.tezvn.aradite.impl.task.AsyncTimerTask;
-import com.github.tezvn.aradite.impl.team.MatchTeam;
+import com.github.tezvn.aradite.impl.team.MatchTeamImpl;
 import com.github.tezvn.aradite.impl.ui.agentselect.AgentSelectUI;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -41,7 +43,7 @@ public class AgentSelectTask extends AsyncTimerTask {
     private Queue<Player> players = Lists.newLinkedList();
     private Player currentTurn;
     private AgentSelectPhase phase;
-    private Map<Player, PlayerPreGameSelectPacket> selectDataMap = Maps.newHashMap();
+    private Map<Player, PlayerPreGameSelectPacketImpl> selectDataMap = Maps.newHashMap();
 
     private int clock = 0;
     private final Language lang = AraditeImpl.getInstance().getLanguage();
@@ -60,7 +62,7 @@ public class AgentSelectTask extends AsyncTimerTask {
     @Override
     public void onExecute() {
         this.players.forEach(player -> {
-            PlayerPreGameSelectPacket data = new PlayerPreGameSelectPacket(player);
+            PlayerPreGameSelectPacketImpl data = new PlayerPreGameSelectPacketImpl(player);
             this.selectDataMap.put(player, data);
 
             Menu.open(player, new AgentSelectUI(match, player, this));
@@ -74,16 +76,16 @@ public class AgentSelectTask extends AsyncTimerTask {
             if (this.phase == AgentSelectPhase.FINALIZING) {
                 setPhase(AgentSelectPhase.FINISHED);
                 this.cancel();
-                this.match.getReport().log("[AGENT_SELECT] Load up the PlayerPreGameSelectPacket ...");
+                this.match.getReport().log("[AGENT_SELECT] Load up the PlayerPreGameSelectPacketImpl ...");
                 this.selectDataMap.entrySet().forEach(entry -> {
                     Player player = entry.getKey();
-                    PlayerPreGameSelectPacket packet = entry.getValue();
+                    PlayerPreGameSelectPacketImpl packet = entry.getValue();
                     PlayerInGameData data = match.retrieveProtocol(player);
                     data.registerPacket(PacketType.PREGAME_SELECT, packet);
 
                     match.getMatchTeam().setSelectedAgents(player, packet.getSelectedAgent());
 
-                    PlayerInGameSkillLevelPacket skillLevelPacket = new PlayerInGameSkillLevelPacket(player,
+                    PlayerInGameSkillLevelPacketImpl skillLevelPacket = new PlayerInGameSkillLevelPacketImpl(player,
                             packet.getSelectedAgentType());
                     data.registerPacket(PacketType.INGAME_SKILL_LEVEL, skillLevelPacket);
 
@@ -155,7 +157,7 @@ public class AgentSelectTask extends AsyncTimerTask {
         this.phase = phase;
     }
 
-    public PlayerPreGameSelectPacket getSelectPacket(Player player) {
+    public PlayerPreGameSelectPacketImpl getSelectPacket(Player player) {
         return this.selectDataMap.get(player);
     }
 
@@ -165,13 +167,13 @@ public class AgentSelectTask extends AsyncTimerTask {
 
     /**
      * Once the agent selecting phase has finished, we need to load both the default and additional attributes
-     * of the agent player selected in the {@link PlayerInGameAttributePacket}.
+     * of the agent player selected in the {@link PlayerInGameAttributePacketImpl}.
      */
     private void loadAttributes() {
         this.selectDataMap.values().forEach(packet -> {
             Player player = packet.getPacketOwner();
 
-            PlayerInGameAttributePacket attributePacket = new PlayerInGameAttributePacket(player);
+            PlayerInGameAttributePacketImpl attributePacket = new PlayerInGameAttributePacketImpl(player);
             attributePacket.setAttributePack(Attributes.DEFAULT_BASE_ATTRIBUTE);
             match.retrieveProtocol(player).registerPacket(PacketType.INGAME_PLAYER_ATTRIBUTE, attributePacket);
         });

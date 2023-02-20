@@ -2,7 +2,7 @@ package com.github.tezvn.aradite.impl.event;
 
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.api.weapon.Weapon;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacket;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacketImpl;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -16,11 +16,11 @@ public class AgentDeathEvent extends Event implements Cancellable {
     private final Match match;
     private final Player killer;
     private final Player target;
-    private final PlayerInGameLastDamagePacket.DeathReason deathReason;
+    private final PlayerInGameLastDamagePacketImpl.DeathReason deathReason;
     private final Weapon weapon;
     private final String skill;
 
-    public AgentDeathEvent(Match match, Player killer, Player target, PlayerInGameLastDamagePacket.DeathReason deathReason, Weapon weapon, String skill) {
+    public AgentDeathEvent(Match match, Player killer, Player target, PlayerInGameLastDamagePacketImpl.DeathReason deathReason, Weapon weapon, String skill) {
         super(true);
         this.match = match;
         this.killer = killer;
@@ -40,7 +40,7 @@ public class AgentDeathEvent extends Event implements Cancellable {
     /**
      * Return the reason why player died.
      */
-    public PlayerInGameLastDamagePacket.DeathReason getDeathReason() {
+    public PlayerInGameLastDamagePacketImpl.DeathReason getDeathReason() {
         return deathReason;
     }
 

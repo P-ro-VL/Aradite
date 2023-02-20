@@ -1,6 +1,5 @@
 package com.github.tezvn.aradite.api.language;
 
-import com.github.tezvn.aradite.impl.language.Placeholder;
 import com.google.common.collect.Lists;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -142,7 +141,8 @@ public class Language {
     public List<String> getListWithPlaceholders(String section, Placeholder... placeholders) {
         List<String> rawList = getList(section);
         List<String> replacedList = new ArrayList<>();
-        outer: for (String string : rawList) {
+        outer:
+        for (String string : rawList) {
             String tempString = string;
             inner:
             for (Placeholder placeholder : placeholders) {

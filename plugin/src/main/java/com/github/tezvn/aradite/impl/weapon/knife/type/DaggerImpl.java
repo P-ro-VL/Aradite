@@ -8,7 +8,7 @@ import org.bukkit.Material;
 public class DaggerImpl extends AbstractKnife implements Dagger {
 
     public DaggerImpl() {
-        super("DAGGER", AraditeAPIProvider.get().getLanguage()
+        super("dagger", AraditeAPIProvider.get().getLanguage()
                 .getString("weapon.displayname.knife.dagger"), Material.STONE_SWORD);
     }
 

@@ -1,17 +1,16 @@
 package com.github.tezvn.aradite.impl.agent.type.innova.skill;
 
-import com.github.tezvn.aradite.api.Aradite;
 import com.github.tezvn.aradite.api.agent.Agents;
 import com.github.tezvn.aradite.api.agent.attribute.AttributeType;
 import com.github.tezvn.aradite.api.agent.skill.SkillType;
-import com.github.tezvn.aradite.api.agent.skill.UltimateSkill;
 import com.github.tezvn.aradite.api.match.Match;
+import com.github.tezvn.aradite.api.team.MatchTeam;
 import com.github.tezvn.aradite.api.team.Team;
 import com.github.tezvn.aradite.api.team.TeamRole;
 import com.github.tezvn.aradite.impl.AraditeImpl;
 import com.github.tezvn.aradite.impl.agent.skill.UltimateSkillImpl;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacket;
-import com.github.tezvn.aradite.impl.team.MatchTeam;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacketImpl;
+import com.github.tezvn.aradite.impl.team.MatchTeamImpl;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
@@ -51,8 +50,8 @@ public class InnovaUltimate extends UltimateSkillImpl {
                             .replaceAll("%reduce%", "" + ARMOR_REDUCE_PERCENT + "%")
                             .replaceAll("%second%", "" + GLOWING_DURATION)));
 
-            PlayerInGameAttributePacket attributePacket = match.retrieveProtocol(player)
-                    .getPacket(PlayerInGameAttributePacket.class);
+            PlayerInGameAttributePacketImpl attributePacket = match.retrieveProtocol(player)
+                    .getPacket(PlayerInGameAttributePacketImpl.class);
             final double currentArmor = attributePacket.getAttribute(AttributeType.ARMOR);
             double changedArmor = (currentArmor / 100) * ARMOR_REDUCE_PERCENT;
             attributePacket.setAttribute(AttributeType.ARMOR, changedArmor);

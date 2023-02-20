@@ -1,14 +1,12 @@
 package com.github.tezvn.aradite.impl.agent.type.moroe.skill;
 
-import com.github.tezvn.aradite.api.Aradite;
 import com.github.tezvn.aradite.api.agent.Agents;
 import com.github.tezvn.aradite.api.agent.attribute.AttributeType;
-import com.github.tezvn.aradite.api.agent.skill.Skill;
 import com.github.tezvn.aradite.api.agent.skill.SkillType;
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.impl.AraditeImpl;
 import com.github.tezvn.aradite.impl.agent.skill.SkillImpl;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacket;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacketImpl;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -29,8 +27,8 @@ public class MoroeC extends SkillImpl {
 
     @Override
     public void onActivate(int level, Match match, Player agent, LivingEntity targetEntity, Block targetBlock) {
-        PlayerInGameAttributePacket attributePacket = match.retrieveProtocol(agent)
-                .getPacket(PlayerInGameAttributePacket.class);
+        PlayerInGameAttributePacketImpl attributePacket = match.retrieveProtocol(agent)
+                .getPacket(PlayerInGameAttributePacketImpl.class);
         attributePacket.setAttribute(AttributeType.DAMAGE_REDUCE_IN_PERCENT, DAMAGE_REDUCE);
 
         new BukkitRunnable() {

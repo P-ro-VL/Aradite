@@ -2,15 +2,13 @@ package com.github.tezvn.aradite.api.match;
 
 import com.github.tezvn.aradite.api.agent.attribute.statusbar.StatusBar;
 import com.github.tezvn.aradite.api.agent.attribute.statusbar.StatusBarType;
+import com.github.tezvn.aradite.api.data.log.Report;
+import com.github.tezvn.aradite.api.packet.type.PlayerInGameData;
+import com.github.tezvn.aradite.api.task.MatchTask;
+import com.github.tezvn.aradite.api.team.MatchTeam;
 import com.github.tezvn.aradite.api.world.MatchMap;
-import com.github.tezvn.aradite.impl.data.log.Report;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameData;
-import com.github.tezvn.aradite.impl.match.MatchScore;
 import com.github.tezvn.aradite.api.match.mechanic.Mechanic;
 import com.github.tezvn.aradite.api.match.mechanic.MechanicType;
-import com.github.tezvn.aradite.impl.task.MatchTask;
-import com.github.tezvn.aradite.impl.task.type.MechanicManagementTask;
-import com.github.tezvn.aradite.impl.team.MatchTeam;
 import com.google.common.collect.Table;
 import org.bukkit.entity.Player;
 
@@ -56,7 +54,6 @@ public interface Match {
     /**
      * Change the current mechanic.<br>
      * This method can getOpposite be separately run but through
-     * {@link MechanicManagementTask MechanicManagementTask}.
      *
      * @param currentMechanic New current mechanic.
      */

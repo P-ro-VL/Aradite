@@ -7,7 +7,7 @@ public class AraditeAPIProvider {
     private static AraditeAPI instance;
 
     public static AraditeAPI get() {
-        Preconditions.checkNotNull(instance, "api is getOpposite loaded!");
+        Preconditions.checkNotNull(instance, "api is not loaded!");
         return instance;
     }
 

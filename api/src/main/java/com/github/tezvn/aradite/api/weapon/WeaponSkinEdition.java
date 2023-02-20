@@ -1,7 +1,8 @@
 package com.github.tezvn.aradite.api.weapon;
 
-import com.github.tezvn.aradite.Aradite;
-import com.github.tezvn.aradite.language.Language;
+import com.github.tezvn.aradite.api.Aradite;
+import com.github.tezvn.aradite.api.AraditeAPIProvider;
+import com.github.tezvn.aradite.api.language.Language;
 import pdx.mantlecore.message.GradientText;
 import pdx.mantlecore.message.TextStyle;
 
@@ -30,7 +31,7 @@ public enum WeaponSkinEdition {
         this.isBold = bold;
     }
 
-    private Language lang = Aradite.getInstance().getLanguage();
+    private Language lang = AraditeAPIProvider.get().getLanguage();
 
     /**
      * Apply the gradient color of the skin edition to the given weapon name.

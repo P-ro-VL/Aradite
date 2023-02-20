@@ -1,6 +1,7 @@
 package com.github.tezvn.aradite.impl.data.global;
 
 import com.github.tezvn.aradite.api.data.EnumDataKey;
+import com.github.tezvn.aradite.api.data.PlayerData;
 import com.github.tezvn.aradite.api.data.SQLTarget;
 import com.github.tezvn.aradite.api.agent.Agents;
 import com.google.common.collect.Maps;
@@ -19,9 +20,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author phongphong28
  */
-public class PlayerDataStorage implements SQLTarget {
+public class PlayerDataStorage implements PlayerData, SQLTarget {
 
-    private UUID uuid;
+    private final UUID uuid;
     private long registerAccountDate;
 
     private Map<EnumDataKey, AtomicInteger> statistics = Maps.newHashMap();
@@ -41,7 +42,7 @@ public class PlayerDataStorage implements SQLTarget {
     /**
      * Return the unique ID of the player.
      */
-    public UUID getUuid() {
+    public UUID getUniqueId() {
         return uuid;
     }
 

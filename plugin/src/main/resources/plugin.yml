@@ -1,5 +1,13 @@
-name: plugin
-version: '${project.version}'
-main: com.github.tezvn.aradite.plugin.Plugin
+name: Aradite
+version: '${plugin.version}'
+main: com.github.tezvn.aradite.impl.AraditeImpl
 api-version: 1.16
 authors: [ TezVN, phongphong28 ]
+depend: [PDXMantleCore]
+commands:
+  edit:
+    usage: /edit
+  list:
+    usage: /list
+  join:
+    usage: /join

@@ -1,16 +1,15 @@
 package com.github.tezvn.aradite.impl.agent.type.winnin.skill;
 
-import com.github.tezvn.aradite.api.Aradite;
 import com.github.tezvn.aradite.api.agent.Agents;
 import com.github.tezvn.aradite.api.agent.skill.SkillType;
 import com.github.tezvn.aradite.api.match.Match;
+import com.github.tezvn.aradite.api.task.MatchTask;
 import com.github.tezvn.aradite.impl.AraditeImpl;
 import com.github.tezvn.aradite.impl.agent.skill.SkillImpl;
-import com.github.tezvn.aradite.impl.data.packet.PacketType;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacket;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacket;
-import com.github.tezvn.aradite.impl.task.MatchTask;
-import com.github.tezvn.aradite.impl.util.LocationUtils;
+import com.github.tezvn.aradite.api.packet.PacketType;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacketImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacketImpl;
+import com.github.tezvn.aradite.impl.task.MatchTaskImpl;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -128,9 +127,9 @@ public class WinninActivateX extends SkillImpl {
                 location.getWorld().playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 5, 0);
 
                 getNearbyPlayers(location, match, agent, DAMAGE_RADIUS).forEach(player -> {
-                    PlayerInGameAttributePacket targetData = (PlayerInGameAttributePacket) match
+                    PlayerInGameAttributePacketImpl targetData = (PlayerInGameAttributePacketImpl) match
                             .retrieveProtocol(player).getPacket(PacketType.INGAME_PLAYER_ATTRIBUTE);
-                    PlayerInGameLastDamagePacket targetLastDmgData = (PlayerInGameLastDamagePacket) match
+                    PlayerInGameLastDamagePacketImpl targetLastDmgData = (PlayerInGameLastDamagePacketImpl) match
                             .retrieveProtocol(player).getPacket(PacketType.INGAME_PLAYER_LAST_DAMAGE);
 
                     targetData.damage("SKILL:" + agent.getName() + "•Winnin•ACTIVE_X", dmg, false,

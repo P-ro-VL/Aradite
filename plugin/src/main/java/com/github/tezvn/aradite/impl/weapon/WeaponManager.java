@@ -1,11 +1,12 @@
 package com.github.tezvn.aradite.impl.weapon;
 
-import com.github.tezvn.aradite.api.Aradite;
-import com.github.tezvn.aradite.api.weapon.AvailableWeapons;
 import com.github.tezvn.aradite.api.weapon.Weapon;
 import com.github.tezvn.aradite.api.weapon.WeaponCategory;
 import com.github.tezvn.aradite.api.weapon.WeaponType;
 import com.github.tezvn.aradite.impl.AraditeImpl;
+import com.github.tezvn.aradite.impl.weapon.gun.type.Bronco;
+import com.github.tezvn.aradite.impl.weapon.gun.type.Bucky;
+import com.github.tezvn.aradite.impl.weapon.knife.type.DaggerImpl;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -13,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,9 +39,10 @@ public class WeaponManager {
 
     /**
      * Return all weapons whose type is {@code weaponType}
+     *
      * @param weaponType The type of weapon
      */
-    public List<Weapon> getWeaponsByType(WeaponType weaponType){
+    public List<Weapon> getWeaponsByType(WeaponType weaponType) {
         return this.availableWeapon.values().stream().filter(weapon -> weapon.getWeaponType() == weaponType)
                 .collect(Collectors.toList());
     }
@@ -85,19 +86,10 @@ public class WeaponManager {
                 .findAny().orElse(null);
     }
 
-    /**
-     * Register all available weapons in {@link AvailableWeapons}.
-     */
     public void register() {
-        try {
-            Class<AvailableWeapons> clazz = AvailableWeapons.class;
-            for (Field field : clazz.getDeclaredFields()) {
-                Weapon weapon = (Weapon) field.get(clazz);
-                register(weapon);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        register(new Bronco());
+        register(new Bucky());
+        register(new DaggerImpl());
         Bukkit.getLogger().info("[ARADITE WEAPON SETUP] Registered " + this.availableWeapon.size() + " weapons !");
     }
 

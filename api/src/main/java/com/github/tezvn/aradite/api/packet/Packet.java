@@ -1,6 +1,5 @@
 package com.github.tezvn.aradite.api.packet;
 
-import com.github.tezvn.aradite.impl.data.packet.DefaultPacketPackage;
 import org.bukkit.entity.Player;
 
 import java.util.Map;

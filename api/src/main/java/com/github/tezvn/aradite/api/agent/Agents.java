@@ -1,25 +1,20 @@
 package com.github.tezvn.aradite.api.agent;
 
-import com.github.tezvn.aradite.impl.agent.type.innova.Innova;
-import com.github.tezvn.aradite.impl.agent.type.moroe.Moroe;
-import com.github.tezvn.aradite.impl.agent.type.winnin.Winnin;
-
 public enum Agents {
 
-    WINNIN(Winnin.class),
+    WINNIN("winnin"),
 
-    MOROE(Moroe.class),
+    MOROE("moroe"),
 
-    INNOVA(Innova.class);
+    INNOVA("innova");
 
-    private Class<? extends Agent> wrapper;
+    private String id;
 
-    private Agents(Class<? extends Agent> wrapper) {
-        this.wrapper = wrapper;
+    private Agents(String id) {
+        this.id = id;
     }
 
-    public Class<? extends Agent> getWrapper() {
-        return wrapper;
+    public String getId() {
+        return id;
     }
-
 }

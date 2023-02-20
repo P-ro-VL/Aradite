@@ -1,13 +1,12 @@
 package com.github.tezvn.aradite.impl.agent.type.moroe.skill;
 
-import com.github.tezvn.aradite.api.Aradite;
 import com.github.tezvn.aradite.api.agent.Agents;
 import com.github.tezvn.aradite.api.agent.skill.SkillType;
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.impl.AraditeImpl;
 import com.github.tezvn.aradite.impl.agent.skill.UltimateSkillImpl;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacket;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacket;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacketImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacketImpl;
 import com.github.tezvn.aradite.impl.util.LocationUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -25,7 +24,6 @@ import pdx.mantlecore.task.TaskQueue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class MoroeUltimate extends UltimateSkillImpl {
 
@@ -93,17 +91,17 @@ public class MoroeUltimate extends UltimateSkillImpl {
                 player2.playSound(player2.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 1);
 
                 if (!player1.equals(agent)) {
-                    PlayerInGameAttributePacket player1AttrPacket = match.retrieveProtocol(player1)
-                            .getPacket(PlayerInGameAttributePacket.class);
+                    PlayerInGameAttributePacketImpl player1AttrPacket = match.retrieveProtocol(player1)
+                            .getPacket(PlayerInGameAttributePacketImpl.class);
                     player1AttrPacket.damage("SKILL:" + agent.getName() + "•Moroe•ULTIMATE", DAMAGE, true, match.retrieveProtocol(player1)
-                            .getPacket(PlayerInGameLastDamagePacket.class));
+                            .getPacket(PlayerInGameLastDamagePacketImpl.class));
                 }
 
                 if (i + 1 == this.spreadPlayers.size() - 1 && !player2.equals(agent)) {
-                    PlayerInGameAttributePacket player2AttrPacket = match.retrieveProtocol(player2)
-                            .getPacket(PlayerInGameAttributePacket.class);
+                    PlayerInGameAttributePacketImpl player2AttrPacket = match.retrieveProtocol(player2)
+                            .getPacket(PlayerInGameAttributePacketImpl.class);
                     player2AttrPacket.damage("SKILL:" + agent.getName() + "•Moroe•ULTIMATE", DAMAGE, true, match.retrieveProtocol(player2)
-                            .getPacket(PlayerInGameLastDamagePacket.class));
+                            .getPacket(PlayerInGameLastDamagePacketImpl.class));
                 }
 
             }

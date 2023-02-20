@@ -1,7 +1,6 @@
 package com.github.tezvn.aradite.api.weapon.knife;
 
 import com.github.tezvn.aradite.api.weapon.WeaponMeta;
-import com.github.tezvn.aradite.weapon.WeaponMeta;
 
 public interface KnifeMeta extends WeaponMeta {
 

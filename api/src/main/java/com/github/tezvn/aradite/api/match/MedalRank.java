@@ -1,6 +1,5 @@
 package com.github.tezvn.aradite.api.match;
 
-import com.github.tezvn.aradite.Aradite;
 import com.github.tezvn.aradite.api.AraditeAPIProvider;
 
 /**

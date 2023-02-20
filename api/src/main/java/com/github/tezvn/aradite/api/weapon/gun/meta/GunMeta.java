@@ -18,13 +18,13 @@ public interface GunMeta extends WeaponMeta {
      * Return the number of bullets this gun need to shot in the specific body part to totally
      * kill an enemy.<br>
      */
-    public Table<IntRange, BodyPart, Integer> getDamageTable();
+    Table<IntRange, BodyPart, Integer> getDamageTable();
 
     /**
      * Set the damage table.
      * @param damageTable The damage table.
      */
-    public void setDamageTable(Table<IntRange, BodyPart, Integer> damageTable);
+    void setDamageTable(Table<IntRange, BodyPart, Integer> damageTable);
 
     /**
      * Return the number of bullets that the gun need to shoot to totally kill an enemy basing on the given
@@ -47,7 +47,7 @@ public interface GunMeta extends WeaponMeta {
     /**
      * Return the attribute map of the gun.
      */
-    public Map<GunMetaType, Double> getAttribute();
+    Map<GunMetaType, Double> getAttribute();
 
     /**
      * Set the attribute value.
@@ -55,13 +55,13 @@ public interface GunMeta extends WeaponMeta {
      * @param attribute Attribute
      * @param value     Value
      */
-    public void setAttribute(GunMetaType attribute, double value);
+    void setAttribute(GunMetaType attribute, double value);
 
     /**
      * Set the attribute values by the given map.
      *
      * @param attributeMap The attribute map
      */
-    public void setAttribute(Map<GunMetaType, Double> attributeMap);
+    void setAttribute(Map<GunMetaType, Double> attributeMap);
 
 }

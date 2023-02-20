@@ -2,8 +2,6 @@ package com.github.tezvn.aradite.api.match.mechanic;
 
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.api.task.AraditeTask;
-import com.github.tezvn.aradite.match.Match;
-import com.github.tezvn.aradite.task.AraditeTask;
 
 /**
  * Each mechanic represents a type of gameplay in a match.
@@ -20,6 +18,7 @@ public interface Mechanic {
 
     /**
      * Change the index of the mechanic.
+     *
      * @param index The new index.
      */
     void setIndex(int index);
@@ -66,6 +65,7 @@ public interface Mechanic {
 
     /**
      * Change the completion state of the mechanic.
+     *
      * @param completed Completion state.
      */
     void setCompleted(boolean completed);

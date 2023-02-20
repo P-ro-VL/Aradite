@@ -2,10 +2,11 @@ package com.github.tezvn.aradite.impl.match;
 
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.api.match.MatchType;
+import com.github.tezvn.aradite.api.team.MatchTeam;
 import com.github.tezvn.aradite.api.world.MapType;
 import com.github.tezvn.aradite.api.world.MatchLocationType;
 import com.github.tezvn.aradite.api.world.MatchMap;
-import com.github.tezvn.aradite.impl.team.MatchTeam;
+import com.github.tezvn.aradite.impl.team.MatchTeamImpl;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -50,7 +51,7 @@ public class MatchManager {
      * @param player The Player
      * @return The match he is in.
      */
-    public DefaultMatch getMatch(Player player) {
+    public Match getMatch(Player player) {
         for (DefaultMatch match : this.availableMatches.values()) {
             MatchTeam team = match.getMatchTeam();
             if (team.getTeamOf(player) != null)

@@ -1,17 +1,21 @@
 package com.github.tezvn.aradite.impl.weapon.gun.type;
 
+import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.api.weapon.BodyPart;
 import com.github.tezvn.aradite.api.weapon.WeaponSkinEdition;
 import com.github.tezvn.aradite.api.weapon.gun.GunType;
 import com.github.tezvn.aradite.api.weapon.gun.meta.GunMeta;
 import com.github.tezvn.aradite.api.weapon.gun.meta.GunMetaType;
 import com.github.tezvn.aradite.api.weapon.gun.meta.WallPenetration;
-import com.github.tezvn.aradite.impl.recoil.ZoomRatio;
+import com.github.tezvn.aradite.api.recoil.ZoomRatio;
 import com.github.tezvn.aradite.impl.weapon.gun.AbstractGun;
 import com.github.tezvn.aradite.impl.weapon.gun.meta.AbstractGunMeta;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import pdx.mantlecore.java.IntRange;
 import pdx.mantlecore.message.GradientText;
 
@@ -20,13 +24,12 @@ import java.util.Map;
 public class Bronco extends AbstractGun {
 
     public Bronco() {
-        super("Bronco", "§7Bronco", GunType.SMG);
+        super("bronco", "§7Bronco", GunType.SMG);
 
         setScopable(true);
         setScopeMode(ZoomRatio.SMALL);
 
-        GunMeta meta = new AbstractGunMeta();
-        meta.registerSkin("sakura", GradientText.toGradient("Bronco Sakura", "&d", "&f")
+        getMeta().registerSkin("sakura", GradientText.toGradient("Bronco Sakura", "&d", "&f")
                 ,1000002, WeaponSkinEdition.PREMIUM, -1, false);
 
         Map<GunMetaType, Double> attributeMap = Maps.newHashMap();
@@ -42,7 +45,7 @@ public class Bronco extends AbstractGun {
         attributeMap.put(GunMetaType.ALT_MOVE_SPEED, 76d);
         attributeMap.put(GunMetaType.WALL_PENETRATION, (double) WallPenetration.LOW.ordinal());
         attributeMap.put(GunMetaType.SOUND_RANGE, 10d);
-        meta.setAttribute(attributeMap);
+        getMeta().setAttribute(attributeMap);
 
         Table<IntRange, BodyPart, Integer> partDamage = HashBasedTable.create();
 
@@ -50,15 +53,16 @@ public class Bronco extends AbstractGun {
         partDamage.put(firstRange, BodyPart.HEAD, 2);
         partDamage.put(firstRange, BodyPart.BODY, 4);
         partDamage.put(firstRange, BodyPart.LEGS, 5);
+        partDamage.put(firstRange, BodyPart.HANDS, 8);
 
         IntRange secondRange = IntRange.of(20, 50);
         partDamage.put(secondRange, BodyPart.HEAD, 2);
         partDamage.put(secondRange, BodyPart.BODY, 4);
         partDamage.put(secondRange, BodyPart.LEGS, 5);
+        partDamage.put(secondRange, BodyPart.HANDS, 8);
 
-        meta.setDamageTable(partDamage);
+        getMeta().setDamageTable(partDamage);
 
-        setMeta(meta);
     }
 
 
@@ -66,4 +70,5 @@ public class Bronco extends AbstractGun {
     public int getCustomModelData() {
         return 1000001;
     }
+
 }

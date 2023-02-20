@@ -20,43 +20,43 @@ public interface Agent {
 	/**
 	 * Return ID of the agent.
 	 */
-	public String getID();
+	String getID();
 
 	/**
 	 * Return the theme color of the agent.
 	 */
-	public Color getThemeColor();
+	Color getThemeColor();
 
 	/**
 	 * Return the display name of the agent.
 	 */
-	public String getDisplayName();
+	String getDisplayName();
 
 	/**
 	 * Return all the skills of the agent.
 	 */
-	public Map<SkillType, Skill> getSkills();
+	Map<SkillType, Skill> getSkills();
 
 	/**
 	 * Return all the textures of the agent.
 	 */
-	public Map<TextureType, Texture> getTextures();
+	Map<TextureType, Texture> getTextures();
 
 	/**
 	 * Change the agent's ID.
 	 */
-	public void setID(String ID);
+	void setID(String ID);
 
 	/**
 	 * Change the agent theme color
 	 * @param color New theme color
 	 */
-	public void setThemeColor(Color color);
+	void setThemeColor(Color color);
 
 	/**
 	 * Change the agent's display name.
 	 */
-	public void setDisplayName(String name);
+	void setDisplayName(String name);
 
 	/**
 	 * Change the texture of a specific agent's texture type.
@@ -66,7 +66,7 @@ public interface Agent {
 	 * @param texture
 	 *            Texture value
 	 */
-	public void setTexture(TextureType type, Texture texture);
+	void setTexture(TextureType type, Texture texture);
 
 	/**
 	 * Set the skill for the agent
@@ -76,12 +76,12 @@ public interface Agent {
 	 * @param skill
 	 *            Skill
 	 */
-	public void setSkill(SkillType type, Skill skill);
+	void setSkill(SkillType type, Skill skill);
 
 	/**
 	 * Bind the skill item to the player's inventory.
 	 * @param player The player
 	 */
-	public void bindSkill(Player player);
+	void bindSkill(Player player);
 
 }

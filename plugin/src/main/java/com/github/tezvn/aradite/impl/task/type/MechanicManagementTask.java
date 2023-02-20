@@ -5,16 +5,18 @@ import com.github.tezvn.aradite.api.agent.attribute.statusbar.StatusBar;
 import com.github.tezvn.aradite.api.language.Language;
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.api.match.MatchFlag;
+import com.github.tezvn.aradite.api.match.MatchScore;
 import com.github.tezvn.aradite.api.match.mechanic.Mechanic;
 import com.github.tezvn.aradite.api.match.mechanic.MechanicType;
+import com.github.tezvn.aradite.api.team.MatchTeam;
 import com.github.tezvn.aradite.api.team.type.UndefinedTeam;
 import com.github.tezvn.aradite.impl.AraditeImpl;
-import com.github.tezvn.aradite.impl.data.packet.PacketType;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacket;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacket;
-import com.github.tezvn.aradite.impl.match.MatchScore;
+import com.github.tezvn.aradite.api.packet.PacketType;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacketImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacketImpl;
+import com.github.tezvn.aradite.impl.match.MatchScoreImpl;
 import com.github.tezvn.aradite.impl.task.AsyncTimerTask;
-import com.github.tezvn.aradite.impl.team.MatchTeam;
+import com.github.tezvn.aradite.impl.team.MatchTeamImpl;
 import io.netty.handler.logging.LogLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -63,11 +65,11 @@ public class MechanicManagementTask extends AsyncTimerTask {
                             player.setGameMode(GameMode.ADVENTURE);
                         });
 
-                        PlayerInGameLastDamagePacket lastDamagePacket = (PlayerInGameLastDamagePacket)
+                        PlayerInGameLastDamagePacketImpl lastDamagePacket = (PlayerInGameLastDamagePacketImpl)
                                 match.retrieveProtocol(player).getPacket(PacketType.INGAME_PLAYER_LAST_DAMAGE);
                         lastDamagePacket.setDead(false);
 
-                        PlayerInGameAttributePacket attributePacket = (PlayerInGameAttributePacket)
+                        PlayerInGameAttributePacketImpl attributePacket = (PlayerInGameAttributePacketImpl)
                                 match.retrieveProtocol(player).getPacket(PacketType.INGAME_PLAYER_ATTRIBUTE);
                         attributePacket.setAttribute(AttributeType.CURRENT_HEALTH,
                                 attributePacket.getAttribute(AttributeType.MAX_HEALTH));

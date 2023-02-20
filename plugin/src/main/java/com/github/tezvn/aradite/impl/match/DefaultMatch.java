@@ -1,35 +1,35 @@
 package com.github.tezvn.aradite.impl.match;
 
-import com.github.tezvn.aradite.api.Aradite;
 import com.github.tezvn.aradite.api.agent.attribute.statusbar.StatusBar;
 import com.github.tezvn.aradite.api.agent.attribute.statusbar.StatusBarType;
+import com.github.tezvn.aradite.api.data.DataController;
+import com.github.tezvn.aradite.api.data.PlayerData;
+import com.github.tezvn.aradite.api.data.Statistic;
+import com.github.tezvn.aradite.api.data.log.Report;
+import com.github.tezvn.aradite.api.data.log.ReportForm;
 import com.github.tezvn.aradite.api.language.Language;
 import com.github.tezvn.aradite.api.match.*;
 import com.github.tezvn.aradite.api.match.mechanic.Mechanic;
 import com.github.tezvn.aradite.api.match.mechanic.MechanicType;
-import com.github.tezvn.aradite.api.match.mechanic.ingame.BombCartMechanic;
-import com.github.tezvn.aradite.api.match.mechanic.ingame.CaptureMechanic;
+import com.github.tezvn.aradite.api.packet.PacketType;
+import com.github.tezvn.aradite.api.packet.type.PlayerInGameData;
+import com.github.tezvn.aradite.api.packet.type.PlayerInGameMVPPacket.MVPStatistics;
 import com.github.tezvn.aradite.api.team.TeamRole;
 import com.github.tezvn.aradite.api.team.type.UndefinedTeam;
 import com.github.tezvn.aradite.api.world.MapType;
 import com.github.tezvn.aradite.api.world.MatchMap;
 import com.github.tezvn.aradite.impl.AraditeImpl;
-import com.github.tezvn.aradite.impl.data.DataController;
-import com.github.tezvn.aradite.impl.data.Statistic;
-import com.github.tezvn.aradite.impl.data.global.PlayerDataStorage;
-import com.github.tezvn.aradite.impl.data.log.Report;
-import com.github.tezvn.aradite.impl.data.log.ReportForm;
-import com.github.tezvn.aradite.impl.data.packet.PacketType;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameData;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacket;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameMVPPacket;
-import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameMVPPacket.MVPStatistics;
+import com.github.tezvn.aradite.impl.agent.attribute.statusbar.AgentHealthBarImpl;
+import com.github.tezvn.aradite.impl.data.DataControllerImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameDataImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacketImpl;
+import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameMVPPacketImpl;
 import com.github.tezvn.aradite.impl.match.mechanic.ingame.BombCartMechanicImpl;
 import com.github.tezvn.aradite.impl.match.mechanic.ingame.CaptureMechanicImpl;
-import com.github.tezvn.aradite.impl.task.MatchTask;
+import com.github.tezvn.aradite.impl.task.MatchTaskImpl;
 import com.github.tezvn.aradite.impl.task.type.AgentSelectTask;
 import com.github.tezvn.aradite.impl.task.type.CountdownToStartTask;
-import com.github.tezvn.aradite.impl.team.MatchTeam;
+import com.github.tezvn.aradite.impl.team.MatchTeamImpl;
 import com.github.tezvn.aradite.impl.team.type.UndefinedTeamImpl;
 import com.github.tezvn.aradite.impl.ui.endmatch.MatchSumUpUI;
 import com.github.tezvn.aradite.impl.world.DefaultMatchMap;
@@ -48,7 +48,6 @@ import pdx.mantlecore.menu.Menu;
 import pdx.mantlecore.task.TaskQueue;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -65,40 +64,33 @@ public class DefaultMatch implements Match {
 
     public static final short PLAYER_TO_START = 2; //TODO 2 FOR TEST MODE
 
-    private static Language lang =  AraditeImpl.getInstance().getLanguage();
+    private static final Language lang = AraditeImpl.getInstance().getLanguage();
 
     private final List<Player> waitingPlayers = Lists.newArrayList();
 
-    private Map<UUID, PlayerInGameData> data = Maps.newConcurrentMap();
-
+    private final Map<UUID, PlayerInGameDataImpl> data = Maps.newConcurrentMap();
+    private final MatchTeamImpl matchTeam;
+    private final MatchTaskImpl matchTask;
+    private final MatchMap matchMap;
+    private final MatchScoreImpl matchScore;
+    private final MatchType matchType;
+    private final Map<MatchFlag, Boolean> matchFlags = Maps.newHashMap();
+    private final Table<Player, StatusBarType, StatusBar> statusBars = HashBasedTable.create();
     private String uuid;
-
     private MatchPhase phase;
-
-    private MatchTeam matchTeam;
-    private MatchTask matchTask;
-    private MatchMap matchMap;
-    private MatchScore matchScore;
-
     private Report matchReport;
-
-    private MatchType matchType;
-
     private boolean isShuffled = false;
     private Mechanic currentMechanic;
-    private Map<MatchFlag, Boolean> matchFlags = Maps.newHashMap();
-
-    private Table<Player, StatusBarType, StatusBar> statusBars = HashBasedTable.create();
 
     public DefaultMatch(MatchType matchType, MapType mapType) {
         this.uuid = IDGenerator.of(7).generate();
         this.matchType = matchType;
         this.matchMap = new DefaultMatchMap(mapType);
 
-        this.matchTask = new MatchTask();
-        this.matchTeam = new MatchTeam(this);
+        this.matchTask = new MatchTaskImpl();
+        this.matchTeam = new MatchTeamImpl(this);
         this.phase = MatchPhase.WAITING;
-        this.matchScore = new MatchScore(this);
+        this.matchScore = new MatchScoreImpl(this);
 
         this.matchReport = new Report();
     }
@@ -122,7 +114,7 @@ public class DefaultMatch implements Match {
     /**
      * Return the score manager of the match.
      */
-    public MatchScore getMatchScore() {
+    public MatchScoreImpl getMatchScore() {
         return matchScore;
     }
 
@@ -144,6 +136,13 @@ public class DefaultMatch implements Match {
     }
 
     /**
+     * Return the currently running mechanic.
+     */
+    public Mechanic getCurrentMechanic() {
+        return currentMechanic;
+    }
+
+    /**
      * Change the current mechanic.<br>
      * This method can getOpposite be separately run but through
      *
@@ -151,13 +150,6 @@ public class DefaultMatch implements Match {
      */
     public void setCurrentMechanic(Mechanic currentMechanic) {
         this.currentMechanic = currentMechanic;
-    }
-
-    /**
-     * Return the currently running mechanic.
-     */
-    public Mechanic getCurrentMechanic() {
-        return currentMechanic;
     }
 
     /**
@@ -187,14 +179,14 @@ public class DefaultMatch implements Match {
      * Return the ingame packet of specific {@link Player} whose uuid is
      * {@code uuid}.
      */
-    public PlayerInGameData retrieveProtocol(Player player) {
+    public PlayerInGameDataImpl retrieveProtocol(Player player) {
         return this.data.get(player.getUniqueId());
     }
 
     /**
      * Return the task manager of the match.
      */
-    public MatchTask getMatchTask() {
+    public MatchTaskImpl getMatchTask() {
         return matchTask;
     }
 
@@ -208,7 +200,7 @@ public class DefaultMatch implements Match {
     /**
      * Return the match's team controller.
      */
-    public MatchTeam getMatchTeam() {
+    public MatchTeamImpl getMatchTeam() {
         return matchTeam;
     }
 
@@ -294,23 +286,16 @@ public class DefaultMatch implements Match {
      * Setup status bars for players.
      */
     public void setupStatusBars() {
-        DataController dataController =  AraditeImpl.getInstance().getDataController();
+        DataController dataController = AraditeImpl.getInstance().getDataController();
         getMatchTeam().getAllPlayers().forEach(player -> {
             for (StatusBarType barType : StatusBarType.values()) {
-                try {
-                    Class<? extends StatusBar> wrapper = barType.getWrapper();
-                    Constructor<? extends StatusBar> constructor = wrapper.getDeclaredConstructor(Player.class, DefaultMatch.class);
-                    StatusBar bar = constructor.newInstance(player, this);
-                    bar.start();
+                StatusBar bar = new AgentHealthBarImpl(player, this);
+                bar.start();
 
-                    statusBars.put(player, barType, bar);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    continue;
-                }
+                statusBars.put(player, barType, bar);
             }
 
-            PlayerDataStorage playerDataStorage = dataController.getUserData(player.getUniqueId());
+            PlayerData playerDataStorage = dataController.getUserData(player.getUniqueId());
             playerDataStorage.increase(Statistic.TOTAL_MATCH, 1);
         });
     }
@@ -319,16 +304,16 @@ public class DefaultMatch implements Match {
      * Set up data and ingame data packet for all waiting players.
      */
     public void setupProtocol() {
-        DataController controller =  AraditeImpl.getInstance().getDataController();
+        DataController controller = AraditeImpl.getInstance().getDataController();
         this.getWaitingPlayers().forEach(player -> {
-            PlayerInGameData data = new PlayerInGameData();
+            PlayerInGameDataImpl data = new PlayerInGameDataImpl();
 
             this.data.put(player.getUniqueId(), data);
-            PlayerDataStorage storage = controller.getUserData(player.getUniqueId());
+            PlayerData storage = controller.getUserData(player.getUniqueId());
             storage.increase(Statistic.TOTAL_MATCH, 1);
 
-            PlayerInGameLastDamagePacket lastDamagePacket = new PlayerInGameLastDamagePacket(player);
-            PlayerInGameMVPPacket mvpPacket = new PlayerInGameMVPPacket(player);
+            PlayerInGameLastDamagePacketImpl lastDamagePacket = new PlayerInGameLastDamagePacketImpl(player);
+            PlayerInGameMVPPacketImpl mvpPacket = new PlayerInGameMVPPacketImpl(player);
             data.registerPacket(PacketType.INGAME_PLAYER_LAST_DAMAGE, lastDamagePacket);
             data.registerPacket(PacketType.INGAME_MVP, mvpPacket);
         });
@@ -398,20 +383,20 @@ public class DefaultMatch implements Match {
         int atkWinRounds = getMatchScore().getScore(true, TeamRole.ATTACK);
         int defWinRounds = getMatchScore().getScore(true, TeamRole.DEFEND);
 
-        DataController dataController =  AraditeImpl.getInstance().getDataController();
+        DataController dataController = AraditeImpl.getInstance().getDataController();
         TeamRole winningTeam = atkWinRounds > defWinRounds ? TeamRole.ATTACK : TeamRole.DEFEND;
         getMatchTeam().getTeam(winningTeam).getMembers().forEach(player -> {
             dataController.getUserData(player.getUniqueId()).increase(Statistic.VICTORY_MATCH, 1);
         });
 
         getMatchTeam().getAllPlayers().forEach(player -> {
-            TaskQueue.runSync( AraditeImpl.getInstance(), () -> {
+            TaskQueue.runSync(AraditeImpl.getInstance(), () -> {
                 player.setGameMode(GameMode.ADVENTURE);
             });
 
-            PlayerDataStorage dataStorage = dataController.getUserData(player.getUniqueId());
+            PlayerData dataStorage = dataController.getUserData(player.getUniqueId());
 
-            PlayerInGameMVPPacket mvpPacket = retrieveProtocol(player).getPacket(PlayerInGameMVPPacket.class);
+            PlayerInGameMVPPacketImpl mvpPacket = retrieveProtocol(player).getPacket(PlayerInGameMVPPacketImpl.class);
 
             for (Statistic stats : Statistic.values())
                 dataStorage.increase(stats, mvpPacket.getStatistic(stats));
@@ -429,7 +414,7 @@ public class DefaultMatch implements Match {
             /*
             Send summing up message.
             */
-        Language lang =  AraditeImpl.getInstance().getLanguage();
+        Language lang = AraditeImpl.getInstance().getLanguage();
         List<String> sumUpBroadcast = lang.getList("match.finish.sum-up-broadcast");
 
         getReport().log("[FINISH] Broadcasting match result to all players ...");
@@ -477,11 +462,11 @@ public class DefaultMatch implements Match {
             }
             splitter.appendElements("\n\t\tMVP points : ");
 
-            PlayerInGameMVPPacket packet = (PlayerInGameMVPPacket) retrieveProtocol(player)
+            PlayerInGameMVPPacketImpl packet = (PlayerInGameMVPPacketImpl) retrieveProtocol(player)
                     .getPacket(PacketType.INGAME_MVP);
             for (MVPStatistics stats : MVPStatistics.values())
                 splitter.appendElements(stats.toString() + "-" + packet.getMVPPoint(stats));
-            headerBuilder.append(splitter.toString() + "\n");
+            headerBuilder.append(splitter + "\n");
         }
 
         form.addHeader(headerBuilder.toString());
