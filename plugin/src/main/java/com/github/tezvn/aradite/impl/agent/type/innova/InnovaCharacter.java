@@ -23,7 +23,7 @@ public class InnovaCharacter extends AbstractAgent implements Innova {
 
         setThemeColor(Color.BLUE);
 
-        setTexture(TextureType.SKULL, new TextureImpl(""));
+        setTexture(TextureType.SKULL, new TextureImpl("663f5a7d7128c73f9b949a582ba58b572d289734abc4121f45537073827110bb"));
 
     }
 

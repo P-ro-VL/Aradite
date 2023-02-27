@@ -6,6 +6,7 @@ import com.github.tezvn.aradite.api.language.Placeholder;
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.api.packet.PacketType;
 import com.github.tezvn.aradite.api.packet.type.PlayerInGameAttributePacket;
+import com.github.tezvn.aradite.api.packet.type.PlayerInGameLastDamagePacket;
 import com.github.tezvn.aradite.api.recoil.RecoilVert;
 import com.github.tezvn.aradite.api.recoil.ZoomRatio;
 import com.github.tezvn.aradite.api.weapon.BodyPart;
@@ -268,7 +269,21 @@ public abstract class AbstractGun implements Gun {
     }
 
     @Override
-    public void damage(Match match, Player dmger, LivingEntity target, Event e) {
+    public void damage(Match match, Player dmger, LivingEntity target, Event ev) {
+        BulletHitEvent e = (BulletHitEvent) ev;
+
+        if (target instanceof Player) {
+            Player entity = (Player) target;
+            if (match != null) {
+                PlayerInGameAttributePacket packet = (PlayerInGameAttributePacket) match.retrieveProtocol(entity)
+                        .getPacket(PacketType.INGAME_PLAYER_ATTRIBUTE);
+                PlayerInGameLastDamagePacket lastDamagePacket = (PlayerInGameLastDamagePacket) match.retrieveProtocol(entity)
+                        .getPacket(PacketType.INGAME_PLAYER_LAST_DAMAGE);
+                packet.damage("GUN:" + dmger.getName() + "•" + getID(), e.getDamage(), true, lastDamagePacket);
+            } else {
+                entity.damage(e.getDamage());
+            }
+        }
     }
 
 }

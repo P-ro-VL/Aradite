@@ -66,6 +66,6 @@ public class OperatorImpl extends AbstractGun implements Operator {
 
     @Override
     public int getCustomModelData() {
-        return 10000;
+        return 2000001;
     }
 }

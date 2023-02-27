@@ -300,6 +300,7 @@ team:
   observer: '&7Quan sát viên'
 agents:
   innova:
+    turret_name: 'Súng bắn nước'
     skill:
       x:
         name: 'Bắn bom nước'
@@ -309,7 +310,7 @@ agents:
         description: 'Bắn ra một mũi tên về phía trước. Mũi tên sẽ phát hiện kẻ địch đầu tiên trong bán kính %detect-range% ô và bám theo kẻ đó cho đến khi trúng hắn. Mũi tên khiến kẻ địch bị lơ lửng trong %levitation-duration% giây'
       ultimate:
         name: 'Thủy triều cất tiếng'
-
+        description: 'Làm lộ diện tất cả kẻ địch và giảm giáp của chúng đi %armor_reduce_percent%'
   moroe:
     skill:
       x:

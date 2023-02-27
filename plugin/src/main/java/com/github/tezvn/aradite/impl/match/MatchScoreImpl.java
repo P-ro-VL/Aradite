@@ -3,6 +3,7 @@ package com.github.tezvn.aradite.impl.match;
 import com.github.tezvn.aradite.api.match.MatchScore;
 import com.github.tezvn.aradite.api.match.MedalRank;
 import com.github.tezvn.aradite.api.packet.type.PlayerInGameMVPPacket.MVPStatistics;
+import com.github.tezvn.aradite.api.team.MatchTeam;
 import com.github.tezvn.aradite.api.team.TeamRole;
 import com.github.tezvn.aradite.api.team.type.UndefinedTeam;
 import com.github.tezvn.aradite.api.packet.PacketType;
@@ -145,7 +146,7 @@ public class MatchScoreImpl implements MatchScore {
      */
     public void initMedal() {
         match.getReport().log("[FINISH] Initialize medals for players ...");
-        MatchTeamImpl team = match.getMatchTeam();
+        MatchTeam team = match.getMatchTeam();
         outer:
         for (Player player : team.getAllPlayers()) {
             PlayerInGameMVPPacketImpl mvpPacket = (PlayerInGameMVPPacketImpl) match.retrieveProtocol(player)

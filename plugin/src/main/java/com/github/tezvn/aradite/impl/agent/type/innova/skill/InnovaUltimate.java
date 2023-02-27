@@ -66,7 +66,7 @@ public class InnovaUltimate extends UltimateSkillImpl {
 
     @Override
     public String getDescription() {
-        return lang.getString("agents.innova.skills.ultimate.description");
+        return lang.getString("agents.innova.skills.ultimate.description").replaceAll("%armor_reduce_percent%", "" + ARMOR_REDUCE_PERCENT);
     }
 
     @Override
