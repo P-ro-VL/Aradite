@@ -9,6 +9,7 @@ import com.github.tezvn.aradite.impl.agent.skill.SkillImpl;
 import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameAttributePacketImpl;
 import com.github.tezvn.aradite.impl.data.packet.type.PlayerInGameLastDamagePacketImpl;
 import com.github.tezvn.aradite.impl.util.LocationUtils;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -16,6 +17,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pdx.mantlecore.item.ItemBuilder;
@@ -36,6 +40,14 @@ public class InnovaX extends SkillImpl {
     @Override
     public void onActivate(int level, Match match, Player agent, LivingEntity targetEntity, Block targetBlock) {
         final Location agentLocation = agent.getLocation();
+
+        final ItemStack potion = new ItemStack(Material.SPLASH_POTION);
+        PotionMeta potionmeta = (PotionMeta) potion.getItemMeta();
+        potionmeta.setColor(Color.BLUE);
+        PotionEffect slow = new PotionEffect(PotionEffectType.SLOW, 2*20, 1);
+        potionmeta.addCustomEffect(slow, true);
+        potion.setItemMeta(potionmeta);
+
         new BukkitRunnable() {
 
             private ArmorStand turret = null;
@@ -49,14 +61,13 @@ public class InnovaX extends SkillImpl {
                 }
 
                 tick++;
-                int seconds = tick / 20;
-                if (seconds >= TURRET_ACTIVATION_TIME || !turret.isValid() || turret.isDead()) {
+                if (tick >= TURRET_ACTIVATION_TIME || !turret.isValid() || turret.isDead()) {
                     this.cancel();
                     turret.remove();
                     return;
                 }
 
-                if (seconds == TURRET_ACTIVATION_TIME - 1) {
+                if (tick == TURRET_ACTIVATION_TIME - 1) {
                     Shapes.circle(turret.getLocation(), ACTIVATION_RANGE, MAX_BOMB_AMOUNT).forEach(
                             this::shootToPosition
                     );
@@ -72,9 +83,10 @@ public class InnovaX extends SkillImpl {
 
             public void shootToPosition(Location targetLocation) {
                 Vector parabolaVector = DimensionalMath.createParabola(turret.getLocation(), targetLocation, 3);
-                SplashPotion splashPotion = targetLocation.getWorld()
-                        .spawn(turret.getLocation().clone().add(0,1,0), SplashPotion.class);
+                ThrownPotion splashPotion = targetLocation.getWorld()
+                        .spawn(turret.getLocation().clone().add(0,2,0), ThrownPotion.class);
                 splashPotion.setVelocity(parabolaVector);
+                splashPotion.setItem(potion);
 
                 Player enemy = LocationUtils.getNearbyPlayers(targetLocation, 2).stream()
                         .filter(player -> !match.getMatchTeam().isOnSameTeam(agent, player)).findAny().orElse(null);
@@ -89,7 +101,7 @@ public class InnovaX extends SkillImpl {
             }
 
             public BukkitRunnable init() {
-                ArmorStand turret = agentLocation.getWorld().spawn(agentLocation.clone().add(0, -0.95, 0),
+                ArmorStand turret = agentLocation.getWorld().spawn(agentLocation.clone().add(0, -1.2, 0),
                         ArmorStand.class);
                 turret.setVisible(false);
                 Arrays.stream(EquipmentSlot.values()).forEach(slot ->

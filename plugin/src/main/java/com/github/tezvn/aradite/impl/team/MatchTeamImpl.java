@@ -63,6 +63,21 @@ public class MatchTeamImpl implements MatchTeam {
     }
 
     /**
+     * Return the players of the opposite team of the player's team
+     */
+    public List<Player> getPlayersInOppositeTeamOf(Player player){
+        TeamRole role = getPlayerTeam(player);
+        if(role == TeamRole.UNDEFINED){
+            UndefinedTeamImpl undefinedTeam = (UndefinedTeamImpl) teams.get(TeamRole.UNDEFINED);
+            UndefinedTeam.Type type = undefinedTeam.getTeamOf(player);
+            return undefinedTeam.getPlayerInTeam(type == UndefinedTeam.Type.A ? UndefinedTeam.Type.B : UndefinedTeam.Type.A);
+        }
+
+        if(role == TeamRole.ATTACK) return getTeam(TeamRole.DEFEND).getMembers();
+        return getTeam(TeamRole.ATTACK).getMembers();
+    }
+
+    /**
      * Define which team will become the attacker team after 3 first rounds.
      */
     public void defineAttacker(UndefinedTeam.Type teamType) {

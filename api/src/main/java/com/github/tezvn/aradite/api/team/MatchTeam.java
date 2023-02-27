@@ -62,6 +62,12 @@ public interface MatchTeam {
     Team getTeam(TeamRole role);
 
     /**
+     * Return all players in the opposite team of given player's team.
+     * @param player The player
+     */
+    List<Player> getPlayersInOppositeTeamOf(Player player);
+
+    /**
      * Return the type of team that the given player is in.
      *
      * @param player Player to check

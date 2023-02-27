@@ -304,7 +304,7 @@ agents:
     skill:
       x:
         name: 'Bắn bom nước'
-        description: 'Đặt xuống một ụ súng tồn tại trong %turret_activation_time% giây. Mỗi giây, ụ súng bắn ra một quả bom nước về phía kẻ địch đầu tiên trong vòng %activation_range% ô, gây sát thương và làm chậm kẻ đó. Trước khi ụ súng biến mất, nó bắn một loạt gồm %max_bomb_amount% quả bom về mọi phía xung quanh.'
+        description: 'Đặt xuống một ụ súng tồn tại trong %turret_activation_time% giây. Mỗi giây, ụ súng bắn ra một quả bom nước về phía kẻ địch đầu tiên trong vòng %activation_range% ô, gây sát thương và làm chậm kẻ đó.'
       c:
         name: 'Bốc hơi'
         description: 'Bắn ra một mũi tên về phía trước. Mũi tên sẽ phát hiện kẻ địch đầu tiên trong bán kính %detect-range% ô và bám theo kẻ đó cho đến khi trúng hắn. Mũi tên khiến kẻ địch bị lơ lửng trong %levitation-duration% giây'

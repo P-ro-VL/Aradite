@@ -26,6 +26,7 @@ import com.github.tezvn.aradite.impl.weapon.gun.meta.AbstractGunMeta;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -251,6 +252,11 @@ public abstract class AbstractGun implements Gun {
 
 
                 double damage = health / ((double) bulletToKill);
+
+                if(hitPart == BodyPart.HEAD) {
+                    player.sendTitle("§c§l☠", "§c§lHEADSHOT", 10, 60, 10);
+                    player.playSound(player.getEyeLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, 3, 1);
+                }
 
                 BulletHitEvent bulletHitEvent = new BulletHitEvent(player, target, gun, damage, hitPart);
 

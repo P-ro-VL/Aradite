@@ -21,7 +21,7 @@ public class InnovaCharacter extends AbstractAgent implements Innova {
         setSkill(SkillType.ACTIVE_C, new InnovaC());
         setSkill(SkillType.ULTIMATE, new InnovaUltimate());
 
-        setThemeColor(Color.BLUE);
+        setThemeColor(Color.AQUA);
 
         setTexture(TextureType.SKULL, new TextureImpl("663f5a7d7128c73f9b949a582ba58b572d289734abc4121f45537073827110bb"));
 

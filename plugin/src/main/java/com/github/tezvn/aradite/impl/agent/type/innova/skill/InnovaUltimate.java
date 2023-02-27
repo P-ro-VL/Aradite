@@ -26,18 +26,16 @@ public class InnovaUltimate extends UltimateSkillImpl {
     private static final int GLOWING_DURATION = 5, ARMOR_REDUCE_PERCENT = 30;
 
     public InnovaUltimate() {
-        super("innova-ultimate", lang.getString("agents.innova.skills.ultimate.name"), Agents.INNOVA);
+        super("innova-ultimate", lang.getString("agents.innova.skill.ultimate.name"), Agents.INNOVA);
 
     }
 
     @Override
     public void onActivate(int level, Match match, Player agent, LivingEntity targetEntity, Block targetBlock) {
         MatchTeam matchTeam = match.getMatchTeam();
-        TeamRole role = matchTeam.getPlayerTeam(agent);
-        Team team = matchTeam.getTeam(role.getOpposite());
         agent.playSound(agent.getEyeLocation(), Sound.BLOCK_BELL_USE, 2, 1);
         agent.playSound(agent.getEyeLocation(), Sound.AMBIENT_UNDERWATER_ENTER, 2, 1);
-        team.getMembers().forEach(player -> {
+        matchTeam.getPlayersInOppositeTeamOf(agent).forEach(player -> {
             player.playSound(player.getEyeLocation(), Sound.AMBIENT_UNDERWATER_ENTER, 2, 1);
             player.playSound(player.getEyeLocation(), Sound.BLOCK_PORTAL_TRIGGER, 1, 1);
             player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, GLOWING_DURATION * 20, 1,
@@ -66,7 +64,8 @@ public class InnovaUltimate extends UltimateSkillImpl {
 
     @Override
     public String getDescription() {
-        return lang.getString("agents.innova.skills.ultimate.description").replaceAll("%armor_reduce_percent%", "" + ARMOR_REDUCE_PERCENT);
+        return lang.getString("agents.innova.skill.ultimate.description")
+                .replaceAll("%armor_reduce_percent%", "" + ARMOR_REDUCE_PERCENT);
     }
 
     @Override
