@@ -89,6 +89,7 @@ public class WinninActivateX extends SkillImpl {
                 if (ball.getLocation().getBlock().getType().isAir()) {
                     Block block = Objects.requireNonNull(ball.getLocation().getWorld())
                             .getHighestBlockAt(ball.getLocation());
+
                     ball.teleport(ball.getLocation().clone().add(0,
                             -(ball.getLocation().getY() - block.getY()) + 0.05, 0));
                 }

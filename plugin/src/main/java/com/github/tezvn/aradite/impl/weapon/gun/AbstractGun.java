@@ -198,7 +198,7 @@ public abstract class AbstractGun implements Gun {
                 Location loc = bullet.getLocation();
                 Player entity = LocationUtils.getNearbyPlayers(loc, 0.5).stream().filter(en -> {
                             boolean condition1 = !en.equals(player);
-                            return condition1 && (match == null || !match.getMatchTeam().isOnSameTeam(player, en));
+                            return condition1 && (match != null && !match.getMatchTeam().isOnSameTeam(player, en));
                         })
                         .findAny().orElse(null);
                 if (entity != null) {

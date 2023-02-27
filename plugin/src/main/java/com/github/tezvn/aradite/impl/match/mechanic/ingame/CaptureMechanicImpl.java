@@ -1,5 +1,6 @@
 package com.github.tezvn.aradite.impl.match.mechanic.ingame;
-
+import com.github.tezvn.aradite.impl.AraditeImpl;
+import pdx.mantlecore.task.TaskQueue;
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.api.match.MatchScore;
 import com.github.tezvn.aradite.api.match.mechanic.MechanicType;
@@ -73,7 +74,9 @@ public class CaptureMechanicImpl extends AbstractMechanic implements CaptureMech
         team.getAllPlayers().forEach(player -> {
             UndefinedTeam.Type teamType = undefinedTeam.getTeamOf(player);
             Location teleLocation = matchMap.getLocation(MatchLocationType.UNDEFINED_TEAM_BASE).get(teamType.ordinal());
-            player.teleport(teleLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            TaskQueue.runSync(AraditeImpl.getInstance(), () -> {
+                player.teleport(teleLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            });
             player.sendTitle(lang.getString("mechanic." + getID() + ".start-title.title"),
                     lang.getString("mechanic." + getID() + ".start-title.sub-title")
                             .replaceAll("%round%", "" + getIndex()), 20, 60, 20);

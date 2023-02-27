@@ -32,6 +32,7 @@ import pdx.mantlecore.item.ItemBuilder;
 import pdx.mantlecore.item.ItemCheckFactory;
 import pdx.mantlecore.java.StringUtils;
 import pdx.mantlecore.math.PrimaryMath;
+import pdx.mantlecore.task.TaskQueue;
 
 import java.util.List;
 import java.util.Stack;
@@ -96,7 +97,9 @@ public class BombCartMechanicImpl extends AbstractMechanic implements BombCartMe
             Location teleLocation = matchMap.getLocation(
                             MatchLocationType.valueOf("TEAM_" + teamRole.toString() + "_BASE"))
                     .get(0);
-            player.teleport(teleLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            TaskQueue.runSync(AraditeImpl.getInstance(), () -> {
+                player.teleport(teleLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            });
             player.sendTitle(lang.getString("mechanic." + getID() + ".start-title."
                     + teamRoleString.toLowerCase() + ".title"),
                     lang.getString("mechanic." + getID() + ".start-title." + teamRoleString.toLowerCase() + ".sub-title")

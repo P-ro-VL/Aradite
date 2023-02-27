@@ -282,7 +282,6 @@ public class MatchImpl implements Match {
         setPhase(MatchPhase.AGENT_SELECT);
         AgentSelectTask task = new AgentSelectTask(this);
         task.start();
-        System.out.println("chay den day roi");
     }
 
     /**
