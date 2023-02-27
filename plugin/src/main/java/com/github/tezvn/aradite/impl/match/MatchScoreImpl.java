@@ -22,13 +22,13 @@ import java.util.Map;
  */
 public class MatchScoreImpl implements MatchScore {
 
-    private final DefaultMatch match;
+    private final MatchImpl match;
     private Table<Integer, TeamRole, Boolean> scoreTable = HashBasedTable.create();
     private Multimap<Player, Pair<MVPStatistics, MedalRank>> medals = HashMultimap.create();
 
     private String teamAResult = "", teamBResult = "";
 
-    public MatchScoreImpl(DefaultMatch match) {
+    public MatchScoreImpl(MatchImpl match) {
         this.match = match;
     }
 

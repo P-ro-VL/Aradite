@@ -76,7 +76,7 @@ public class AgentSelectTask extends AsyncTimerTask {
             if (this.phase == AgentSelectPhase.FINALIZING) {
                 setPhase(AgentSelectPhase.FINISHED);
                 this.cancel();
-                this.match.getReport().log("[AGENT_SELECT] Load up the PlayerPreGameSelectPacketImpl ...");
+                this.match.getReport().log("[AGENT_SELECT] Load up the PlayerPreGameSelectPacket ...");
                 this.selectDataMap.entrySet().forEach(entry -> {
                     Player player = entry.getKey();
                     PlayerPreGameSelectPacketImpl packet = entry.getValue();

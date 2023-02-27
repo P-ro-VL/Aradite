@@ -5,7 +5,6 @@ import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.api.world.MatchLocationType;
 import com.github.tezvn.aradite.api.world.MatchMap;
 import com.github.tezvn.aradite.impl.AraditeImpl;
-import com.github.tezvn.aradite.impl.match.DefaultMatch;
 import com.google.common.collect.Maps;
 import org.bukkit.Location;
 import org.bukkit.Material;

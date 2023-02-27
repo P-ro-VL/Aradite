@@ -2,10 +2,12 @@ package com.github.tezvn.aradite.impl.weapon.gun;
 
 import com.github.tezvn.aradite.api.agent.attribute.AttributeType;
 import com.github.tezvn.aradite.api.language.Language;
+import com.github.tezvn.aradite.api.language.Placeholder;
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.api.packet.PacketType;
 import com.github.tezvn.aradite.api.packet.type.PlayerInGameAttributePacket;
 import com.github.tezvn.aradite.api.recoil.RecoilVert;
+import com.github.tezvn.aradite.api.recoil.ZoomRatio;
 import com.github.tezvn.aradite.api.weapon.BodyPart;
 import com.github.tezvn.aradite.api.weapon.gun.Gun;
 import com.github.tezvn.aradite.api.weapon.gun.GunType;
@@ -13,8 +15,6 @@ import com.github.tezvn.aradite.api.weapon.gun.animation.ShootAnimation;
 import com.github.tezvn.aradite.api.weapon.gun.meta.GunMeta;
 import com.github.tezvn.aradite.api.weapon.gun.meta.GunMetaType;
 import com.github.tezvn.aradite.impl.AraditeImpl;
-import com.github.tezvn.aradite.api.language.Placeholder;
-import com.github.tezvn.aradite.api.recoil.ZoomRatio;
 import com.github.tezvn.aradite.impl.event.BulletHitEvent;
 import com.github.tezvn.aradite.impl.recoil.Recoil;
 import com.github.tezvn.aradite.impl.util.LocationUtils;
@@ -42,10 +42,10 @@ import java.util.Map;
 
 public abstract class AbstractGun implements Gun {
 
+    private final GunMeta meta = new AbstractGunMeta();
     private String ID;
     private Material material;
     private GunType type;
-    private final GunMeta meta = new AbstractGunMeta();
     private String displayName;
     private boolean scopable;
     private ZoomRatio scopingMode;
@@ -63,9 +63,17 @@ public abstract class AbstractGun implements Gun {
         return scopingMode;
     }
 
+    public void setScopeMode(ZoomRatio scopingMode) {
+        this.scopingMode = scopingMode;
+    }
+
     @Override
     public boolean isScopable() {
         return scopable;
+    }
+
+    public void setScopable(boolean scopable) {
+        this.scopable = scopable;
     }
 
     @Override
@@ -83,6 +91,10 @@ public abstract class AbstractGun implements Gun {
         return this.material;
     }
 
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
     @Override
     public GunType getType() {
         return this.type;
@@ -91,18 +103,6 @@ public abstract class AbstractGun implements Gun {
     @Override
     public GunMeta getMeta() {
         return this.meta;
-    }
-
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
-
-    public void setScopable(boolean scopable) {
-        this.scopable = scopable;
-    }
-
-    public void setScopeMode(ZoomRatio scopingMode) {
-        this.scopingMode = scopingMode;
     }
 
     @Override
@@ -168,7 +168,7 @@ public abstract class AbstractGun implements Gun {
                 shootAnimation = new ShotgunAnimationImpl();
                 break;
         }
-        if(shootAnimation == null)
+        if (shootAnimation == null)
             return;
 
         List<Location> bulletLines = shootAnimation.calculate(player, getType().getRange());
@@ -188,7 +188,7 @@ public abstract class AbstractGun implements Gun {
 
             @Override
             public void run() {
-                if(bullet.isDead() || !bullet.isValid()){
+                if (bullet.isDead() || !bullet.isValid()) {
                     this.cancel();
                     return;
                 }
@@ -239,15 +239,15 @@ public abstract class AbstractGun implements Gun {
                 int bulletToKill = getMeta().getBulletsToKill(
                         (int) player.getLocation().distance(target.getLocation()), hitPart);
 
-                double health = 0d;
+                double health;
 
                 if (match != null) {
                     PlayerInGameAttributePacket entityHealth = (PlayerInGameAttributePacket)
                             match.retrieveProtocol(target).getPacket(PacketType.INGAME_PLAYER_ATTRIBUTE);
                     health = entityHealth.getAttribute(AttributeType.MAX_HEALTH);
-                } else {
+                } else
                     health = target.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-                }
+
 
                 double damage = health / ((double) bulletToKill);
 

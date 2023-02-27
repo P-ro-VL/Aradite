@@ -4,8 +4,9 @@ import com.github.tezvn.aradite.api.weapon.Weapon;
 import com.github.tezvn.aradite.api.weapon.WeaponCategory;
 import com.github.tezvn.aradite.api.weapon.WeaponType;
 import com.github.tezvn.aradite.impl.AraditeImpl;
-import com.github.tezvn.aradite.impl.weapon.gun.type.Bronco;
-import com.github.tezvn.aradite.impl.weapon.gun.type.Bucky;
+import com.github.tezvn.aradite.impl.weapon.gun.type.BroncoImpl;
+import com.github.tezvn.aradite.impl.weapon.gun.type.BuckyImpl;
+import com.github.tezvn.aradite.impl.weapon.gun.type.OperatorImpl;
 import com.github.tezvn.aradite.impl.weapon.knife.type.DaggerImpl;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
@@ -77,7 +78,7 @@ public class WeaponManager {
     public Weapon getWeaponByItemStack(ItemStack itemStack) {
         if (itemStack == null || !itemStack.hasItemMeta()) return null;
         ItemMeta meta = itemStack.getItemMeta();
-        NamespacedKey idKey = new NamespacedKey(AraditeImpl.getInstance(), "weapon-id");
+        NamespacedKey idKey = new NamespacedKey("aradite", "weapon-id");
         assert meta != null;
         meta.getPersistentDataContainer();
         if (!meta.getPersistentDataContainer().has(idKey, PersistentDataType.STRING)) return null;
@@ -87,8 +88,9 @@ public class WeaponManager {
     }
 
     public void register() {
-        register(new Bronco());
-        register(new Bucky());
+        register(new BroncoImpl());
+        register(new BuckyImpl());
+        register(new OperatorImpl());
         register(new DaggerImpl());
         Bukkit.getLogger().info("[ARADITE WEAPON SETUP] Registered " + this.availableWeapon.size() + " weapons !");
     }

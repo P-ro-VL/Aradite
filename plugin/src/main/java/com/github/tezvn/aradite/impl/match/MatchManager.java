@@ -6,7 +6,6 @@ import com.github.tezvn.aradite.api.team.MatchTeam;
 import com.github.tezvn.aradite.api.world.MapType;
 import com.github.tezvn.aradite.api.world.MatchLocationType;
 import com.github.tezvn.aradite.api.world.MatchMap;
-import com.github.tezvn.aradite.impl.team.MatchTeamImpl;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,12 +26,12 @@ public class MatchManager {
 
     public static final String DATA_DIRECTORY_PATH = "plugins/Aradite/match-data/";
 
-    private final Map<String, DefaultMatch> availableMatches = Maps.newConcurrentMap();
+    private final Map<String, MatchImpl> availableMatches = Maps.newConcurrentMap();
 
     /**
      * Return all available matches.
      */
-    public Map<String, DefaultMatch> getAvailableMatches() {
+    public Map<String, MatchImpl> getAvailableMatches() {
         return availableMatches;
     }
 
@@ -41,7 +40,7 @@ public class MatchManager {
      *
      * @param uuid Match's uuid.
      */
-    public DefaultMatch getMatch(String uuid) {
+    public MatchImpl getMatch(String uuid) {
         return availableMatches.get(uuid);
     }
 
@@ -52,7 +51,7 @@ public class MatchManager {
      * @return The match he is in.
      */
     public Match getMatch(Player player) {
-        for (DefaultMatch match : this.availableMatches.values()) {
+        for (MatchImpl match : this.availableMatches.values()) {
             MatchTeam team = match.getMatchTeam();
             if (team.getTeamOf(player) != null)
                 return match;
@@ -63,7 +62,7 @@ public class MatchManager {
     /**
      * Return all registered matches.
      */
-    public Collection<DefaultMatch> getAllAvailableMatches() {
+    public Collection<MatchImpl> getAllAvailableMatches() {
         return this.availableMatches.values();
     }
 
@@ -73,7 +72,7 @@ public class MatchManager {
      * @param match The match need registering.
      */
     public void registerMatch(Match match) {
-        this.availableMatches.put(match.getUniqueID(), (DefaultMatch) match);
+        this.availableMatches.put(match.getUniqueID(), (MatchImpl) match);
     }
 
     /**
@@ -93,7 +92,7 @@ public class MatchManager {
                 MatchType matchType = MatchType.valueOf(config.getString("match-type"));
                 MapType mapType = MapType.valueOf(config.getString("match-map.map-type"));
 
-                DefaultMatch match = new DefaultMatch(matchType, mapType);
+                MatchImpl match = new MatchImpl(matchType, mapType);
                 match.setUuid(id);
 
                 MatchMap matchMap = match.getMatchMap();
@@ -124,7 +123,7 @@ public class MatchManager {
      * Save all matches' data into the local database.
      */
     public void save() {
-        for (DefaultMatch match : getAllAvailableMatches()) {
+        for (MatchImpl match : getAllAvailableMatches()) {
             try {
                 File file = new File(DATA_DIRECTORY_PATH + match.getUniqueID() + ".yml");
                 if (!file.exists())

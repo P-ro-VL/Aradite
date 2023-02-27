@@ -1,12 +1,11 @@
 package com.github.tezvn.aradite.impl.ui.matchsetup;
 
-import com.github.tezvn.aradite.api.Aradite;
 import com.github.tezvn.aradite.api.language.Language;
 import com.github.tezvn.aradite.api.match.Match;
 import com.github.tezvn.aradite.api.match.MatchType;
 import com.github.tezvn.aradite.api.world.MapType;
 import com.github.tezvn.aradite.impl.AraditeImpl;
-import com.github.tezvn.aradite.impl.match.DefaultMatch;
+import com.github.tezvn.aradite.impl.match.MatchImpl;
 import com.github.tezvn.aradite.impl.match.MatchManager;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -75,7 +74,7 @@ public class MatchCreateUI extends Menu {
                     return;
                 }
 
-                Match match = new DefaultMatch(finalMatchType, finalMapType);
+                Match match = new MatchImpl(finalMatchType, finalMapType);
                 matchManager.registerMatch(match);
 
                 player.closeInventory();
